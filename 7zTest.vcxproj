@@ -74,7 +74,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="PathScanner.h" />
+    <ClInclude Include="SevenZip\ArchiveExtractCallback.h" />
     <ClInclude Include="SevenZip\ArchiveFileInfo.h" />
+    <ClInclude Include="SevenZip\ArchiveOpenCallback.h" />
     <ClInclude Include="SevenZip\ArchiveProperty.h" />
     <ClInclude Include="SevenZip\ArchiveUpdateCallback.h" />
     <ClInclude Include="SevenZip\BaseComObject.h" />
@@ -94,6 +96,8 @@
   <ItemGroup>
     <ClCompile Include="7zTest.cpp" />
     <ClCompile Include="PathScanner.cpp" />
+    <ClCompile Include="SevenZip\ArchiveExtractCallback.cpp" />
+    <ClCompile Include="SevenZip\ArchiveOpenCallback.cpp" />
     <ClCompile Include="SevenZip\ArchiveUpdateCallback.cpp" />
     <ClCompile Include="SevenZip\BaseComObject.cpp" />
     <ClCompile Include="SevenZip\FileSys.cpp" />

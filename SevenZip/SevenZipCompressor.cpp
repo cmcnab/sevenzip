@@ -9,8 +9,9 @@
 namespace SevenZip
 {
 
-SevenZipCompressor::SevenZipCompressor( const SevenZipLibrary& library )
+SevenZipCompressor::SevenZipCompressor( const SevenZipLibrary& library, const CString& archivePath )
 	: m_library( library )
+	, m_archivePath( archivePath )
 {
 }
 
@@ -18,13 +19,12 @@ SevenZipCompressor::~SevenZipCompressor()
 {
 }
 
-void SevenZipCompressor::CompressDirectory( const CString& directory, const CString& archiveName, bool recursion )
+void SevenZipCompressor::CompressDirectory( const CString& directory, bool recursion )
 {
-	// TODO: is archiveName a fullpath?
-	CComPtr< IStream > fileStream = FileSys::OpenFileToWrite( archiveName );
+	CComPtr< IStream > fileStream = FileSys::OpenFileToWrite( m_archivePath );
 	if ( fileStream == nullptr )
 	{
-		throw SevenZipException( StrFmt( _T( "Could not create archive \"%s\"" ), archiveName.GetString() ) );
+		throw SevenZipException( StrFmt( _T( "Could not create archive \"%s\"" ), m_archivePath.GetString() ) );
 	}
 	
 	CompressDirectory( directory, fileStream, recursion );

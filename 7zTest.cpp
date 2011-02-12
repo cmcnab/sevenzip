@@ -11,8 +11,8 @@ int Run()
 		SevenZip::SevenZipLibrary lib;
 		lib.Load();
 
-		SevenZip::SevenZipCompressor compressor( lib );
-		compressor.CompressDirectory( _T( "D:\\Temp\\7zTest\\Test1" ), _T( "D:\\Temp\\7zTest\\Test1.7z" ) );
+		SevenZip::SevenZipCompressor compressor( lib, _T( "D:\\Temp\\7zTest\\Test1.7z" ) );
+		compressor.CompressDirectory( _T( "D:\\Temp\\7zTest\\Test1" ) );
 	}
 	catch ( SevenZip::SevenZipException& ex )
 	{

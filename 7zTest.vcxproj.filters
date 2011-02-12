@@ -75,6 +75,12 @@
     <ClInclude Include="PathScanner.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SevenZip\ArchiveOpenCallback.h">
+      <Filter>SevenZip\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SevenZip\ArchiveExtractCallback.h">
+      <Filter>SevenZip\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -118,6 +124,12 @@
     </ClCompile>
     <ClCompile Include="PathScanner.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SevenZip\ArchiveOpenCallback.cpp">
+      <Filter>SevenZip\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SevenZip\ArchiveExtractCallback.cpp">
+      <Filter>SevenZip\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

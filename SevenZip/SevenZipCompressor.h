@@ -12,16 +12,14 @@ namespace SevenZip
 	private:
 
 		const SevenZipLibrary& m_library;
+		CString m_archivePath;
 
 	public:
 
-		SevenZipCompressor( const SevenZipLibrary& library );
+		SevenZipCompressor( const SevenZipLibrary& library, const CString& archivePath );
 		virtual ~SevenZipCompressor();
 
-		//const std::vector< ArchiveFileInfo >& GetArchiveFileData();
-		//const std::vector< ArchiveProperty >& GetArchiveProperties();
-
-		virtual void CompressDirectory( const CString& directory, const CString& archiveName, bool recursion = true );
+		virtual void CompressDirectory( const CString& directory, bool recursion = true );
 
 	private:
 
