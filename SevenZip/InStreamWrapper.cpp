@@ -82,7 +82,10 @@ STDMETHODIMP InStreamWrapper::Seek( Int64 offset, UInt32 seekOrigin, UInt64* new
 
 	move.QuadPart = offset;
 	HRESULT hr = m_baseStream->Seek( move, seekOrigin, &newPos );
-	*newPosition =  newPos.QuadPart;
+	if ( newPosition != nullptr )
+	{
+		*newPosition =  newPos.QuadPart;
+	}
 	return hr;
 }
 

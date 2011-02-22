@@ -10,6 +10,9 @@ namespace SevenZip
 	{
 	public:
 
+		static CString GetPath( const CString& filePath );
+		static CString AppendPath( const CString& first, const CString& second );
+
 		static bool DirectoryExists( const CString& directory );
 		static bool IsDirectoryEmptyRecursive( const CString& directory );
 

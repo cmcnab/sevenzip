@@ -2,26 +2,13 @@
 #include "ArchiveExtractCallback.h"
 #include "PropVariant.h"
 #include "FileSys.h"
-//#include "InStreamWrapper.h"
+#include "OutStreamWrapper.h"
 
 
 namespace SevenZip
 {
 
 const CString EmptyFileAlias = _T( "[Content]" );
-
-
-UInt64 ConvertPropVariantToUInt64(const PROPVARIANT &prop)
-{
-	switch (prop.vt)
-	{
-		case VT_UI1: return prop.bVal;
-		case VT_UI2: return prop.uiVal;
-		case VT_UI4: return prop.ulVal;
-		case VT_UI8: return (UInt64)prop.uhVal.QuadPart;
-		default: throw 151199;
-	}
-}
 
 
 ArchiveExtractCallback::ArchiveExtractCallback( const CComPtr< IInArchive >& archiveHandler, const CString& directory )
@@ -88,21 +75,43 @@ STDMETHODIMP ArchiveExtractCallback::SetCompleted( const UInt64* completeValue )
 
 STDMETHODIMP ArchiveExtractCallback::GetStream( UInt32 index, ISequentialOutStream** outStream, Int32 askExtractMode )
 {
-	CString filePath;
-	HRESULT hr = GetPropertyFilePath( index, filePath );
-	if ( hr != S_OK )
+	try
 	{
-		return hr;
+		GetPropertyFilePath( index );
+		if ( askExtractMode != NArchive::NExtract::NAskMode::kExtract )
+		{
+			return S_OK;
+		}
+
+		GetPropertyAttributes( index );
+		GetPropertyIsDir( index );
+		GetPropertyModifiedTime( index );
+		GetPropertySize( index );
+	}
+	catch ( _com_error& ex )
+	{
+		return ex.Error();
 	}
 
-	if ( askExtractMode != NArchive::NExtract::NAskMode::kExtract )
+	CString relPath = FileSys::GetPath( m_filePath );
+	// TODO: create folders recursive
+
+	CString finalPath = FileSys::AppendPath( m_directory, m_filePath );
+	if ( m_isDir )
 	{
+		*outStream = nullptr;
 		return S_OK;
 	}
+	
+	// TODO: attempt to create the file (deleting first if already exists)
+	CComPtr< IStream > fileStream = FileSys::OpenFileToWrite( finalPath );
+	if ( fileStream == nullptr )
+	{
+		return HRESULT_FROM_WIN32( GetLastError() );
+	}
 
-	FileInfo fileInfo;
-	//hr = GetPropertyAttributes( index, fileInfo.Attributes );
-
+	CComPtr< OutStreamWrapper > wrapperStream = new OutStreamWrapper( fileStream );
+	*outStream = wrapperStream.Detach();
 
 	return S_OK;
 }
@@ -114,6 +123,7 @@ STDMETHODIMP ArchiveExtractCallback::PrepareOperation( Int32 askExtractMode )
 
 STDMETHODIMP ArchiveExtractCallback::SetOperationResult( Int32 operationResult )
 {
+	// TODO: set modified time, file attributes
 	return S_OK;
 }
 
@@ -122,107 +132,132 @@ STDMETHODIMP ArchiveExtractCallback::CryptoGetTextPassword( BSTR* password )
 	return E_ABORT;
 }
 
-HRESULT ArchiveExtractCallback::GetPropertyFilePath( UInt32 index, CString& filePath )
+void ArchiveExtractCallback::GetPropertyFilePath( UInt32 index )
 {
 	CPropVariant prop;
 	HRESULT hr = m_archiveHandler->GetProperty( index, kpidPath, &prop );
 	if ( hr != S_OK )
 	{
-		return hr;
+		_com_issue_error( hr );
 	}
 
 	if ( prop.vt == VT_EMPTY )
 	{
-		filePath = EmptyFileAlias;
-		return S_OK;
+		m_filePath = EmptyFileAlias;
 	}
 	else if ( prop.vt != VT_BSTR )
 	{
-		return E_FAIL;
+		_com_issue_error( E_FAIL );
 	}
-
-	filePath = prop.bstrVal;
-	return S_OK;
+	else
+	{
+		m_filePath = prop.bstrVal;
+	}
 }
 
-HRESULT ArchiveExtractCallback::GetPropertyAttributes( UInt32 index, UINT& attributes )
+void ArchiveExtractCallback::GetPropertyAttributes( UInt32 index )
 {
 	CPropVariant prop;
 	HRESULT hr = m_archiveHandler->GetProperty( index, kpidAttrib, &prop );
 	if ( hr != S_OK )
 	{
-		return hr;
+		_com_issue_error( hr );
 	}
 
 	if ( prop.vt == VT_EMPTY )
 	{
-		attributes = 0;
-		//AttribDefined = false;
-		return S_OK;
+		m_attrib = 0;
+		m_hasAttrib = false;
 	}
 	else if ( prop.vt != VT_UI4 )
 	{
-		return E_FAIL;
+		_com_issue_error( E_FAIL );
 	}
-
-	attributes = prop.ulVal;
-	//AttribDefined = true;
-	return S_OK;
+	else
+	{
+		m_attrib = prop.ulVal;
+		m_hasAttrib = true;
+	}
 }
 
-HRESULT ArchiveExtractCallback::GetPropertyModifiedTime( UInt32 index, FILETIME& modifiedTime )
+void ArchiveExtractCallback::GetPropertyIsDir( UInt32 index )
+{
+	CPropVariant prop;
+	HRESULT hr = m_archiveHandler->GetProperty( index, kpidIsDir, &prop );
+	if ( hr != S_OK )
+	{
+		_com_issue_error( hr );
+	}
+
+	if ( prop.vt == VT_EMPTY )
+	{
+		m_isDir = false;
+	}
+	else if ( prop.vt != VT_BOOL )
+	{
+		_com_issue_error( E_FAIL );
+	}
+	else
+	{
+		m_isDir = prop.boolVal != VARIANT_FALSE;
+	}
+}
+
+void ArchiveExtractCallback::GetPropertyModifiedTime( UInt32 index )
 {
 	CPropVariant prop;
 	HRESULT hr = m_archiveHandler->GetProperty( index, kpidMTime, &prop );
 	if ( hr != S_OK )
 	{
-		return hr;
+		_com_issue_error( hr );
 	}
 
 	if ( prop.vt == VT_EMPTY )
 	{
-		return S_FALSE;
+		m_hasModifiedTime = false;
 	}
 	else if ( prop.vt != VT_FILETIME )
 	{
-		return E_FAIL;
+		_com_issue_error( E_FAIL );
 	}
-
-	modifiedTime = prop.filetime;
-	//MTimeDefined = true;
-	return S_OK;
+	else
+	{
+		m_modifiedTime = prop.filetime;
+		m_hasModifiedTime = true;
+	}
 }
 
-HRESULT ArchiveExtractCallback::GetPropertySize( UInt32 index, UInt64& size )
+void ArchiveExtractCallback::GetPropertySize( UInt32 index )
 {
 	CPropVariant prop;
-	HRESULT hr = m_archiveHandler->GetProperty( index, kpidPath, &prop );
+	HRESULT hr = m_archiveHandler->GetProperty( index, kpidSize, &prop );
 	if ( hr != S_OK )
 	{
-		return hr;
+		_com_issue_error( hr );
 	}
 
 	switch ( prop.vt )
 	{
 	case VT_EMPTY:
-		return S_FALSE;
+		m_hasNewFileSize = false;
+		return;
 	case VT_UI1: 
-		size = prop.bVal;
+		m_newFileSize = prop.bVal;
 		break;
 	case VT_UI2:
-		size = prop.uiVal;
+		m_newFileSize = prop.uiVal;
 		break;
 	case VT_UI4:
-		size = prop.ulVal;
+		m_newFileSize = prop.ulVal;
 		break;
 	case VT_UI8:
-		size = (UInt64)prop.uhVal.QuadPart;
+		m_newFileSize = (UInt64)prop.uhVal.QuadPart;
 		break;
 	default:
-		return E_FAIL;
+		_com_issue_error( E_FAIL );
 	}
 
-	return S_OK;
+	m_hasNewFileSize = true;
 }
 
 }

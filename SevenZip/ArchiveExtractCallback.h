@@ -15,6 +15,18 @@ namespace SevenZip
 		CComPtr< IInArchive > m_archiveHandler;
 		CString m_directory;
 
+		CString m_filePath;
+		bool m_isDir;
+
+		bool m_hasAttrib;
+		UInt32 m_attrib;
+
+		bool m_hasModifiedTime;
+		FILETIME m_modifiedTime;
+
+		bool m_hasNewFileSize;
+		UInt64 m_newFileSize;
+
 	public:
 
 		ArchiveExtractCallback( const CComPtr< IInArchive >& archiveHandler, const CString& directory );
@@ -38,9 +50,10 @@ namespace SevenZip
 
 	private:
 
-		HRESULT GetPropertyFilePath( UInt32 index, CString& filePath );
-		HRESULT GetPropertyAttributes( UInt32 index, UINT& attributes );
-		HRESULT GetPropertyModifiedTime( UInt32 index, FILETIME& modifiedTime );
-		HRESULT GetPropertySize( UInt32 index, UInt64& size );
+		void GetPropertyFilePath( UInt32 index );
+		void GetPropertyAttributes( UInt32 index );
+		void GetPropertyIsDir( UInt32 index );
+		void GetPropertyModifiedTime( UInt32 index );
+		void GetPropertySize( UInt32 index );
 	};
 }

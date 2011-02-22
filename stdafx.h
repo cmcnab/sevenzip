@@ -15,5 +15,6 @@
 
 #include <atlstr.h>
 #include <atlcom.h>
+#include <comdef.h>
 #include <vector>
 #include <stack>

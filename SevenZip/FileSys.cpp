@@ -49,6 +49,39 @@ private:
 	}
 };
 
+CString FileSys::GetPath( const CString& filePath )
+{
+	int pos = filePath.ReverseFind( _T( '\\' ) );
+	if ( pos <= 0 )
+	{
+		pos = filePath.ReverseFind( _T( '/' ) );
+		if ( pos <= 0 )
+		{
+			return CString();
+		}
+	}
+
+	return filePath.Left( pos );
+}
+
+CString FileSys::AppendPath( const CString& first, const CString& second )
+{
+	if ( first.GetLength() == 0 )
+	{
+		return second;
+	}
+
+	TCHAR lastChar = first[ first.GetLength() - 1 ];
+	if ( lastChar == _T( '\\' ) || lastChar == _T( '/' ) )
+	{
+		return first + second;
+	}
+	else
+	{
+		return first + _T( "\\" ) + second;
+	}
+}
+
 bool FileSys::DirectoryExists( const CString& directory )
 {
 	return true;
