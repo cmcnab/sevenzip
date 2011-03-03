@@ -92,6 +92,16 @@ bool FileSys::IsDirectoryEmptyRecursive( const CString& directory )
 	return false;
 }
 
+bool FileSys::CreateDirectories( const CString& path )
+{
+	return true;
+}
+
+//bool FileSys::CreateDirectory( const CString& directory )
+//{
+//	return ::CreateDirectory(
+//}
+
 std::vector< FilePathInfo > FileSys::GetFilesInDirectory( const CString& directory )
 {
 	return GetFilesInDirectory( directory, _T( "*" ) );

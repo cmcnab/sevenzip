@@ -16,6 +16,8 @@ namespace SevenZip
 		static bool DirectoryExists( const CString& directory );
 		static bool IsDirectoryEmptyRecursive( const CString& directory );
 
+		static bool CreateDirectories( const CString& path );
+
 		static std::vector< FilePathInfo > GetFilesInDirectory( const CString& directory );
 		static std::vector< FilePathInfo > GetFilesInDirectory( const CString& directory, const CString& searchPattern );
 
