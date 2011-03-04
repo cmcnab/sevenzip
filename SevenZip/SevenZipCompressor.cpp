@@ -52,16 +52,17 @@ void SevenZipCompressor::CompressDirectory( const CString& directory, const CCom
 		files = FileSys::GetFilesInDirectory( directory );
 	}
 
-	CompressFiles( archiveStream, files );
+	CString pathPrefix = FileSys::GetPath( directory );
+	CompressFiles( archiveStream, pathPrefix, files );
 }
 
-void SevenZipCompressor::CompressFiles( const CComPtr< IStream >& archiveStream, const std::vector< FilePathInfo >& filePaths )
+void SevenZipCompressor::CompressFiles( const CComPtr< IStream >& archiveStream, const CString& pathPrefix, const std::vector< FilePathInfo >& filePaths )
 {
 	CComPtr< IOutArchive > archiver;
 	m_library.CreateObject( CLSID_CFormat7z, IID_IOutArchive, (void**)&archiver );
 
 	CComPtr< OutStreamWrapper > outFile = new OutStreamWrapper( archiveStream );
-	CComPtr< ArchiveUpdateCallback > callback = new ArchiveUpdateCallback( filePaths );
+	CComPtr< ArchiveUpdateCallback > callback = new ArchiveUpdateCallback( pathPrefix, filePaths );
 
 	HRESULT hr = archiver->UpdateItems( outFile, filePaths.size(), callback );
 	if ( hr != S_OK ) // returning S_FALSE also indicates error

@@ -14,11 +14,12 @@ namespace SevenZip
 	private:
 
 		long m_refCount;
+		CString m_dirPrefix;
 		const std::vector< FilePathInfo >& m_filePaths;
 
 	public:
 
-		ArchiveUpdateCallback( const std::vector< FilePathInfo >& filePaths );
+		ArchiveUpdateCallback( const CString& dirPrefix, const std::vector< FilePathInfo >& filePaths );
 		virtual ~ArchiveUpdateCallback();
 
 		STDMETHOD(QueryInterface)( REFIID iid, void** ppvObject );

@@ -8,8 +8,9 @@
 namespace SevenZip
 {
 
-ArchiveUpdateCallback::ArchiveUpdateCallback( const std::vector< FilePathInfo >& filePaths )
+ArchiveUpdateCallback::ArchiveUpdateCallback( const CString& dirPrefix, const std::vector< FilePathInfo >& filePaths )
 	: m_refCount( 0 )
+	, m_dirPrefix( dirPrefix )
 	, m_filePaths( filePaths )
 {
 }
@@ -116,7 +117,7 @@ STDMETHODIMP ArchiveUpdateCallback::GetProperty( UInt32 index, PROPID propID, PR
 	const FilePathInfo& fileInfo = m_filePaths.at( index );
 	switch ( propID )
 	{
-		case kpidPath:		prop = fileInfo.FileName; break; // TODO: relative path
+		case kpidPath:		prop = FileSys::ExtractRelativePath( m_dirPrefix, fileInfo.FilePath ); break;
 		case kpidIsDir:		prop = fileInfo.IsDirectory; break;
 		case kpidSize:		prop = fileInfo.Size; break;
 		case kpidAttrib:	prop = fileInfo.Attributes; break;

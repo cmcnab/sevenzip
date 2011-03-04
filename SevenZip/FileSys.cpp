@@ -82,6 +82,21 @@ CString FileSys::AppendPath( const CString& first, const CString& second )
 	}
 }
 
+CString FileSys::ExtractRelativePath( const CString& basePath, const CString& fullPath )
+{
+	if ( basePath.GetLength() >= fullPath.GetLength() )
+	{
+		return CString();
+	}
+
+	if ( basePath != fullPath.Left( basePath.GetLength() ) )
+	{
+		return CString();
+	}
+
+	return fullPath.Mid( basePath.GetLength() + 1 );
+}
+
 bool FileSys::DirectoryExists( const CString& path )
 {
 	return true;
