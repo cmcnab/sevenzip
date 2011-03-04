@@ -15,7 +15,8 @@ namespace SevenZip
 		CComPtr< IInArchive > m_archiveHandler;
 		CString m_directory;
 
-		CString m_filePath;
+		CString m_relPath;
+		CString m_absPath;
 		bool m_isDir;
 
 		bool m_hasAttrib;

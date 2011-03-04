@@ -93,21 +93,22 @@ STDMETHODIMP ArchiveExtractCallback::GetStream( UInt32 index, ISequentialOutStre
 		return ex.Error();
 	}
 
-	CString absPath = FileSys::AppendPath( m_directory, m_filePath );
-	CString absDir = FileSys::GetPath( absPath );
-	
-	FileSys::CreateDirectoryTree( absDir );
-	
 	if ( m_isDir )
 	{
+		m_absPath.Empty();
 		*outStream = nullptr;
 		return S_OK;
 	}
+
+	m_absPath = FileSys::AppendPath( m_directory, m_relPath );
+
+	CString absDir = FileSys::GetPath( m_absPath );
+	FileSys::CreateDirectoryTree( absDir );
 	
-	// TODO: attempt to create the file (deleting first if already exists)
-	CComPtr< IStream > fileStream = FileSys::OpenFileToWrite( absPath );
+	CComPtr< IStream > fileStream = FileSys::OpenFileToWrite( m_absPath );
 	if ( fileStream == nullptr )
 	{
+		m_absPath.Empty();
 		return HRESULT_FROM_WIN32( GetLastError() );
 	}
 
@@ -124,7 +125,26 @@ STDMETHODIMP ArchiveExtractCallback::PrepareOperation( Int32 askExtractMode )
 
 STDMETHODIMP ArchiveExtractCallback::SetOperationResult( Int32 operationResult )
 {
-	// TODO: set modified time, file attributes
+	if ( m_absPath.IsEmpty() )
+	{
+		return S_OK;
+	}
+
+	if ( m_hasModifiedTime )
+	{
+		HANDLE fileHandle = CreateFile( m_absPath, GENERIC_WRITE, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL );
+		if ( fileHandle != INVALID_HANDLE_VALUE )
+		{
+			SetFileTime( fileHandle, NULL, NULL, &m_modifiedTime );
+			CloseHandle( fileHandle );
+		}
+	}
+
+	if ( m_hasAttrib )
+	{
+		SetFileAttributes( m_absPath, m_attrib );
+	}
+
 	return S_OK;
 }
 
@@ -144,7 +164,7 @@ void ArchiveExtractCallback::GetPropertyFilePath( UInt32 index )
 
 	if ( prop.vt == VT_EMPTY )
 	{
-		m_filePath = EmptyFileAlias;
+		m_relPath = EmptyFileAlias;
 	}
 	else if ( prop.vt != VT_BSTR )
 	{
@@ -152,7 +172,7 @@ void ArchiveExtractCallback::GetPropertyFilePath( UInt32 index )
 	}
 	else
 	{
-		m_filePath = prop.bstrVal;
+		m_relPath = prop.bstrVal;
 	}
 }
 
