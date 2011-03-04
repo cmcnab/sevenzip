@@ -9,7 +9,7 @@
 
 namespace SevenZip
 {
-	class ArchiveUpdateCallback : public IArchiveUpdateCallback2, public ICryptoGetTextPassword2, public ICompressProgressInfo
+	class ArchiveUpdateCallback : public IArchiveUpdateCallback, public ICryptoGetTextPassword2, public ICompressProgressInfo
 	{
 	private:
 
@@ -35,10 +35,6 @@ namespace SevenZip
 		STDMETHOD(GetProperty)( UInt32 index, PROPID propID, PROPVARIANT* value );
 		STDMETHOD(GetStream)( UInt32 index, ISequentialInStream** inStream );
 		STDMETHOD(SetOperationResult)( Int32 operationResult );
-
-		// IArchiveUpdateCallback2
-		STDMETHOD(GetVolumeSize)( UInt32 index, UInt64* size );
-		STDMETHOD(GetVolumeStream)( UInt32 index, ISequentialOutStream** volumeStream );
 
 		// ICryptoGetTextPassword2
 		STDMETHOD(CryptoGetTextPassword2)( Int32* passwordIsDefined, BSTR* password );

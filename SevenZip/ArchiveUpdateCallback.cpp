@@ -28,9 +28,9 @@ STDMETHODIMP ArchiveUpdateCallback::QueryInterface( REFIID iid, void** ppvObject
 		return S_OK;
 	}
 
-	if ( iid == IID_IArchiveUpdateCallback2 )
+	if ( iid == IID_IArchiveUpdateCallback )
 	{
-		*ppvObject = static_cast< IArchiveUpdateCallback2* >( this );
+		*ppvObject = static_cast< IArchiveUpdateCallback* >( this );
 		AddRef();
 		return S_OK;
 	}
@@ -157,35 +157,6 @@ STDMETHODIMP ArchiveUpdateCallback::GetStream( UInt32 index, ISequentialInStream
 
 STDMETHODIMP ArchiveUpdateCallback::SetOperationResult( Int32 operationResult )
 {
-	return S_OK;
-}
-
-STDMETHODIMP ArchiveUpdateCallback::GetVolumeSize( UInt32 index, UInt64* size )
-{
-	//if (VolumesSizes.Size() == 0)
-	//return S_FALSE;
-	//if (index >= (UInt32)VolumesSizes.Size())
-	//index = VolumesSizes.Size() - 1;
-	//*size = VolumesSizes[index];
-	return S_OK;
-}
-
-STDMETHODIMP ArchiveUpdateCallback::GetVolumeStream( UInt32 index, ISequentialOutStream** volumeStream )
-{
-  //wchar_t temp[16];
-  //ConvertUInt32ToString(index + 1, temp);
-  //UString res = temp;
-  //while (res.Length() < 2)
-  //  res = UString(L'0') + res;
-  //UString fileName = VolName;
-  //fileName += L'.';
-  //fileName += res;
-  //fileName += VolExt;
-  //COutFileStream *streamSpec = new COutFileStream;
-  //CMyComPtr<ISequentialOutStream> streamLoc(streamSpec);
-  //if (!streamSpec->Create(fileName, false))
-  //  return ::GetLastError();
-  //*volumeStream = streamLoc.Detach();
 	return S_OK;
 }
 
