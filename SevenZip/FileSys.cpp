@@ -82,25 +82,21 @@ CString FileSys::AppendPath( const CString& first, const CString& second )
 	}
 }
 
-bool FileSys::DirectoryExists( const CString& directory )
+bool FileSys::DirectoryExists( const CString& path )
 {
 	return true;
 }
 
-bool FileSys::IsDirectoryEmptyRecursive( const CString& directory )
+bool FileSys::IsDirectoryEmptyRecursive( const CString& path )
 {
 	return false;
 }
 
-bool FileSys::CreateDirectories( const CString& path )
+bool FileSys::CreateDirectoryTree( const CString& path )
 {
-	return true;
+	int ret = SHCreateDirectoryEx( NULL, path, NULL );
+	return ret == ERROR_SUCCESS;
 }
-
-//bool FileSys::CreateDirectory( const CString& directory )
-//{
-//	return ::CreateDirectory(
-//}
 
 std::vector< FilePathInfo > FileSys::GetFilesInDirectory( const CString& directory )
 {

@@ -13,10 +13,10 @@ namespace SevenZip
 		static CString GetPath( const CString& filePath );
 		static CString AppendPath( const CString& first, const CString& second );
 
-		static bool DirectoryExists( const CString& directory );
-		static bool IsDirectoryEmptyRecursive( const CString& directory );
+		static bool DirectoryExists( const CString& path );
+		static bool IsDirectoryEmptyRecursive( const CString& path );
 
-		static bool CreateDirectories( const CString& path );
+		static bool CreateDirectoryTree( const CString& path );
 
 		static std::vector< FilePathInfo > GetFilesInDirectory( const CString& directory );
 		static std::vector< FilePathInfo > GetFilesInDirectory( const CString& directory, const CString& searchPattern );

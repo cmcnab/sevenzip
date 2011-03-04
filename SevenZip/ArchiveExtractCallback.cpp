@@ -93,10 +93,11 @@ STDMETHODIMP ArchiveExtractCallback::GetStream( UInt32 index, ISequentialOutStre
 		return ex.Error();
 	}
 
-	CString relPath = FileSys::GetPath( m_filePath );
-	// TODO: create folders recursive
-
-	CString finalPath = FileSys::AppendPath( m_directory, m_filePath );
+	CString absPath = FileSys::AppendPath( m_directory, m_filePath );
+	CString absDir = FileSys::GetPath( absPath );
+	
+	FileSys::CreateDirectoryTree( absDir );
+	
 	if ( m_isDir )
 	{
 		*outStream = nullptr;
@@ -104,7 +105,7 @@ STDMETHODIMP ArchiveExtractCallback::GetStream( UInt32 index, ISequentialOutStre
 	}
 	
 	// TODO: attempt to create the file (deleting first if already exists)
-	CComPtr< IStream > fileStream = FileSys::OpenFileToWrite( finalPath );
+	CComPtr< IStream > fileStream = FileSys::OpenFileToWrite( absPath );
 	if ( fileStream == nullptr )
 	{
 		return HRESULT_FROM_WIN32( GetLastError() );
