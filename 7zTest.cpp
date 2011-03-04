@@ -10,8 +10,8 @@ int Compress()
 		SevenZip::SevenZipLibrary lib;
 		lib.Load();
 
-		SevenZip::SevenZipCompressor compressor( lib, _T( "C:\\Temp\\7zTest\\Test1.7z" ) );
-		compressor.CompressDirectory( _T( "C:\\Temp\\7zTest\\Test1" ) );
+		SevenZip::SevenZipCompressor compressor( lib, _T( "D:\\Temp\\7zTest\\Test1.7z" ) );
+		compressor.CompressDirectory( _T( "D:\\Temp\\7zTest\\Test1" ) );
 	}
 	catch ( SevenZip::SevenZipException& ex )
 	{
@@ -29,8 +29,8 @@ int Extract()
 		SevenZip::SevenZipLibrary lib;
 		lib.Load();
 
-		SevenZip::SevenZipExtractor extractor( lib, _T( "C:\\Temp\\7zTest\\Test1.7z" ) );
-		extractor.ExtractArchive( _T( "C:\\Temp\\7zTest\\Test1-Ext" ) );
+		SevenZip::SevenZipExtractor extractor( lib, _T( "D:\\Temp\\7zTest\\Test1.7z" ) );
+		extractor.ExtractArchive( _T( "D:\\Temp\\7zTest\\Test1-Ext" ) );
 	}
 	catch ( SevenZip::SevenZipException& ex )
 	{
