@@ -81,6 +81,12 @@
     <ClInclude Include="SevenZip\ArchiveExtractCallback.h">
       <Filter>SevenZip\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SevenZip\CompressionLevel.h">
+      <Filter>SevenZip\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RCEnum.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

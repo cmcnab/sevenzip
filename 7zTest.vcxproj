@@ -136,12 +136,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="PathScanner.h" />
+    <ClInclude Include="RCEnum.h" />
     <ClInclude Include="SevenZip\ArchiveExtractCallback.h" />
     <ClInclude Include="SevenZip\ArchiveFileInfo.h" />
     <ClInclude Include="SevenZip\ArchiveOpenCallback.h" />
     <ClInclude Include="SevenZip\ArchiveProperty.h" />
     <ClInclude Include="SevenZip\ArchiveUpdateCallback.h" />
     <ClInclude Include="SevenZip\BaseComObject.h" />
+    <ClInclude Include="SevenZip\CompressionLevel.h" />
     <ClInclude Include="SevenZip\FileInfo.h" />
     <ClInclude Include="SevenZip\FileSys.h" />
     <ClInclude Include="SevenZip\GUIDs.h" />

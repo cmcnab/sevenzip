@@ -4,6 +4,7 @@
 #include "FileSys.h"
 #include "ArchiveUpdateCallback.h"
 #include "OutStreamWrapper.h"
+#include "PropVariant.h"
 
 
 namespace SevenZip
@@ -17,6 +18,11 @@ SevenZipCompressor::SevenZipCompressor( const SevenZipLibrary& library, const CS
 
 SevenZipCompressor::~SevenZipCompressor()
 {
+}
+
+void SevenZipCompressor::SetCompressionLevel( const CompressionLevelEnum& level )
+{
+	m_compressionLevel = level;
 }
 
 void SevenZipCompressor::CompressDirectory( const CString& directory, bool recursion )
@@ -59,7 +65,9 @@ void SevenZipCompressor::CompressDirectory( const CString& directory, const CCom
 void SevenZipCompressor::CompressFiles( const CComPtr< IStream >& archiveStream, const CString& pathPrefix, const std::vector< FilePathInfo >& filePaths )
 {
 	CComPtr< IOutArchive > archiver;
-	m_library.CreateObject( CLSID_CFormat7z, IID_IOutArchive, (void**)&archiver );
+	m_library.CreateObject( CLSID_CFormat7z, IID_IOutArchive, reinterpret_cast< void** >( &archiver ) );
+
+	SetCompressionProperties( archiver );
 
 	CComPtr< OutStreamWrapper > outFile = new OutStreamWrapper( archiveStream );
 	CComPtr< ArchiveUpdateCallback > callback = new ArchiveUpdateCallback( pathPrefix, filePaths );
@@ -68,6 +76,26 @@ void SevenZipCompressor::CompressFiles( const CComPtr< IStream >& archiveStream,
 	if ( hr != S_OK ) // returning S_FALSE also indicates error
 	{
 		throw SevenZipCOMException( _T( "Create archive" ), hr );
+	}
+}
+
+void SevenZipCompressor::SetCompressionProperties( IUnknown* outArchive )
+{
+	const size_t numProps = 1;
+	const wchar_t* names[numProps] = { L"x" };
+	CPropVariant values[numProps] = { static_cast< UInt32 >( m_compressionLevel.GetValue() ) };
+
+	CComPtr< ISetProperties > setter;
+	outArchive->QueryInterface( IID_ISetProperties, (void**)&setter );
+	if ( setter == nullptr )
+	{
+		throw SevenZipException( _T( "Archive does not support setting compression properties" ) );
+	}
+
+	HRESULT hr = setter->SetProperties( names, values, numProps );
+	if ( hr != S_OK )
+	{
+		throw SevenZipCOMException( _T( "Setting compression properties" ), hr );
 	}
 }
 
