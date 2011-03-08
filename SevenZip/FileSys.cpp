@@ -23,11 +23,19 @@ public:
 
 	virtual bool Entry( const CString& fullpath, const WIN32_FIND_DATA& fdata, bool& exit )
 	{
-		m_files.push_back( ConvertFindInfo( fullpath, fdata ) );
+		if ( m_recursive || !IsDirectory( fdata ) )
+		{
+			m_files.push_back( ConvertFindInfo( fullpath, fdata ) );
+		}
 		return m_recursive;
 	}
 
 private:
+
+	static bool IsDirectory( const WIN32_FIND_DATA& fdata )
+	{
+		return ( fdata.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY ) != 0;
+	}
 
 	static FilePathInfo ConvertFindInfo( const CString& fullpath, const WIN32_FIND_DATA& fdata )
 	{
@@ -38,7 +46,7 @@ private:
 		file.CreationTime	= fdata.ftCreationTime;
 		file.LastAccessTime	= fdata.ftLastAccessTime;
 		file.Attributes		= fdata.dwFileAttributes;
-		file.IsDirectory	= ( fdata.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY ) != 0;
+		file.IsDirectory	= IsDirectory( fdata );
 
 		ULARGE_INTEGER size;
 		size.LowPart = fdata.nFileSizeLow;

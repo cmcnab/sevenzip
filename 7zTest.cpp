@@ -10,10 +10,12 @@ int Compress()
 		SevenZip::SevenZipLibrary lib;
 		lib.Load();
 
-		SevenZip::SevenZipCompressor compressor( lib, _T( "D:\\Temp\\7zTest\\Test1FastMine.7z" ) );
+		SevenZip::SevenZipCompressor compressor( lib, _T( "D:\\Temp\\7zTest\\Test2-RootlessSearch.7z" ) );
 
 		compressor.SetCompressionLevel( SevenZip::CompressionLevel::Fast );
-		compressor.CompressDirectory( _T( "D:\\Temp\\7zTest\\Test1" ) );
+		//compressor.CompressDirectory( _T( "D:\\Temp\\7zTest\\Test2" ) );
+		//compressor.CompressAllFiles( _T( "D:\\Temp\\7zTest\\Test2" ), false );
+		compressor.CompressFiles( _T( "D:\\Temp\\7zTest\\Test2" ), _T( "*.sql" ) );
 	}
 	catch ( SevenZip::SevenZipException& ex )
 	{
@@ -45,6 +47,6 @@ int Extract()
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	return Extract();
+	return Compress();
 }
 

@@ -10,6 +10,9 @@
 namespace SevenZip
 {
 
+const CString SearchPatternAllFiles = _T( "*" );
+
+
 SevenZipCompressor::SevenZipCompressor( const SevenZipLibrary& library, const CString& archivePath )
 	: m_library( library )
 	, m_archivePath( archivePath )
@@ -25,18 +28,47 @@ void SevenZipCompressor::SetCompressionLevel( const CompressionLevelEnum& level 
 	m_compressionLevel = level;
 }
 
-void SevenZipCompressor::CompressDirectory( const CString& directory, bool recursion )
+void SevenZipCompressor::CompressDirectory( const CString& directory, bool includeSubdirs )
+{	
+	FindAndCompressFiles( 
+			directory, 
+			SearchPatternAllFiles, 
+			FileSys::GetPath( directory ), 
+			OpenArchiveStream(), 
+			includeSubdirs );
+}
+
+void SevenZipCompressor::CompressFiles( const CString& directory, const CString& searchFilter, bool includeSubdirs )
+{
+	FindAndCompressFiles( 
+			directory, 
+			searchFilter, 
+			directory, 
+			OpenArchiveStream(), 
+			includeSubdirs );
+}
+
+void SevenZipCompressor::CompressAllFiles( const CString& directory, bool includeSubdirs )
+{
+	FindAndCompressFiles( 
+			directory, 
+			SearchPatternAllFiles, 
+			directory, 
+			OpenArchiveStream(), 
+			includeSubdirs );
+}
+
+CComPtr< IStream > SevenZipCompressor::OpenArchiveStream()
 {
 	CComPtr< IStream > fileStream = FileSys::OpenFileToWrite( m_archivePath );
 	if ( fileStream == nullptr )
 	{
 		throw SevenZipException( StrFmt( _T( "Could not create archive \"%s\"" ), m_archivePath.GetString() ) );
 	}
-	
-	CompressDirectory( directory, fileStream, recursion );
+	return fileStream;
 }
 
-void SevenZipCompressor::CompressDirectory( const CString& directory, const CComPtr< IStream >& archiveStream, bool recursion )
+void SevenZipCompressor::FindAndCompressFiles( const CString& directory, const CString& searchPattern, const CString& pathPrefix, const CComPtr< IStream >& archiveStream, bool recursion )
 {
 	if ( !FileSys::DirectoryExists( directory ) )
 	{
@@ -51,18 +83,17 @@ void SevenZipCompressor::CompressDirectory( const CString& directory, const CCom
 	std::vector< FilePathInfo > files;
 	if ( recursion )
 	{
-		files = FileSys::GetFilesInDirectoryRecursive( directory );
+		files = FileSys::GetFilesInDirectoryRecursive( directory, searchPattern );
 	}
 	else
 	{
-		files = FileSys::GetFilesInDirectory( directory );
+		files = FileSys::GetFilesInDirectory( directory, searchPattern );
 	}
 
-	CString pathPrefix = FileSys::GetPath( directory );
-	CompressFiles( archiveStream, pathPrefix, files );
+	CompressFilesToArchive( archiveStream, pathPrefix, files );
 }
 
-void SevenZipCompressor::CompressFiles( const CComPtr< IStream >& archiveStream, const CString& pathPrefix, const std::vector< FilePathInfo >& filePaths )
+void SevenZipCompressor::CompressFilesToArchive( const CComPtr< IStream >& archiveStream, const CString& pathPrefix, const std::vector< FilePathInfo >& filePaths )
 {
 	CComPtr< IOutArchive > archiver;
 	m_library.CreateObject( CLSID_CFormat7z, IID_IOutArchive, reinterpret_cast< void** >( &archiver ) );
@@ -86,7 +117,7 @@ void SevenZipCompressor::SetCompressionProperties( IUnknown* outArchive )
 	CPropVariant values[numProps] = { static_cast< UInt32 >( m_compressionLevel.GetValue() ) };
 
 	CComPtr< ISetProperties > setter;
-	outArchive->QueryInterface( IID_ISetProperties, (void**)&setter );
+	outArchive->QueryInterface( IID_ISetProperties, reinterpret_cast< void** >( &setter ) );
 	if ( setter == nullptr )
 	{
 		throw SevenZipException( _T( "Archive does not support setting compression properties" ) );
