@@ -58,6 +58,19 @@ void SevenZipCompressor::CompressAllFiles( const CString& directory, bool includ
 			includeSubdirs );
 }
 
+void SevenZipCompressor::CompressFile( const CString& filePath )
+{
+	CString path = FileSys::GetPath( filePath );
+	CString name = FileSys::GetFileName( filePath );
+
+	FindAndCompressFiles( 
+			path, 
+			name, 
+			path, 
+			OpenArchiveStream(), 
+			false );
+}
+
 CComPtr< IStream > SevenZipCompressor::OpenArchiveStream()
 {
 	CComPtr< IStream > fileStream = FileSys::OpenFileToWrite( m_archivePath );
@@ -80,16 +93,7 @@ void SevenZipCompressor::FindAndCompressFiles( const CString& directory, const C
 		throw SevenZipException( StrFmt( _T( "Directory \"%s\" is empty" ), directory.GetString() ) );
 	}
 
-	std::vector< FilePathInfo > files;
-	if ( recursion )
-	{
-		files = FileSys::GetFilesInDirectoryRecursive( directory, searchPattern );
-	}
-	else
-	{
-		files = FileSys::GetFilesInDirectory( directory, searchPattern );
-	}
-
+	std::vector< FilePathInfo > files = FileSys::GetFilesInDirectory( directory, searchPattern, recursion );
 	CompressFilesToArchive( archiveStream, pathPrefix, files );
 }
 
