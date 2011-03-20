@@ -1,7 +1,7 @@
 #pragma once
 
 
-#include "../RCEnum.h"
+#include "Enum.h"
 
 
 namespace SevenZip

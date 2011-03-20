@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "FileSys.h"
-#include "../PathScanner.h"
+#include "PathScanner.h"
 
 
 namespace SevenZip

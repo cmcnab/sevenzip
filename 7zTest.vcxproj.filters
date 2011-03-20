@@ -13,75 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="SevenZip">
-      <UniqueIdentifier>{699bc6ef-2fe1-4d2a-9ace-168139a1c78f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SevenZip\Header Files">
-      <UniqueIdentifier>{87271ddb-552e-48d2-9be6-9f4526cf818b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SevenZip\Source Files">
-      <UniqueIdentifier>{7d1743a6-0344-49aa-b3e5-d8f881716720}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SevenZip\ArchiveUpdateCallback.h">
-      <Filter>SevenZip\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SevenZip\GUIDs.h">
-      <Filter>SevenZip\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SevenZip\SevenZipExtractor.h">
-      <Filter>SevenZip\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SevenZip\ArchiveFileInfo.h">
-      <Filter>SevenZip\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SevenZip\ArchiveProperty.h">
-      <Filter>SevenZip\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SevenZip\SevenZipCompressor.h">
-      <Filter>SevenZip\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SevenZip\SevenZipLibrary.h">
-      <Filter>SevenZip\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SevenZip\SevenZipException.h">
-      <Filter>SevenZip\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SevenZip\FileSys.h">
-      <Filter>SevenZip\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SevenZip\FileInfo.h">
-      <Filter>SevenZip\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SevenZip\PropVariant.h">
-      <Filter>SevenZip\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SevenZip\InStreamWrapper.h">
-      <Filter>SevenZip\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SevenZip\OutStreamWrapper.h">
-      <Filter>SevenZip\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PathScanner.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SevenZip\ArchiveOpenCallback.h">
-      <Filter>SevenZip\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SevenZip\ArchiveExtractCallback.h">
-      <Filter>SevenZip\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SevenZip\CompressionLevel.h">
-      <Filter>SevenZip\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RCEnum.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -91,45 +28,6 @@
     </ClCompile>
     <ClCompile Include="7zTest.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SevenZip\ArchiveUpdateCallback.cpp">
-      <Filter>SevenZip\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SevenZip\GUIDs.cpp">
-      <Filter>SevenZip\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SevenZip\SevenZipExtractor.cpp">
-      <Filter>SevenZip\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SevenZip\SevenZipCompressor.cpp">
-      <Filter>SevenZip\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SevenZip\SevenZipLibrary.cpp">
-      <Filter>SevenZip\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SevenZip\SevenZipException.cpp">
-      <Filter>SevenZip\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SevenZip\FileSys.cpp">
-      <Filter>SevenZip\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SevenZip\PropVariant.cpp">
-      <Filter>SevenZip\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SevenZip\InStreamWrapper.cpp">
-      <Filter>SevenZip\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SevenZip\OutStreamWrapper.cpp">
-      <Filter>SevenZip\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PathScanner.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SevenZip\ArchiveOpenCallback.cpp">
-      <Filter>SevenZip\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SevenZip\ArchiveExtractCallback.cpp">
-      <Filter>SevenZip\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
