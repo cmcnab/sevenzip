@@ -32,6 +32,9 @@ namespace SevenZip
 		virtual void CompressFiles( const CString& directory, const CString& searchFilter, bool includeSubdirs = true );
 		virtual void CompressAllFiles( const CString& directory, bool includeSubdirs = true );
 
+		// Compress just this single file as the root item in the archive.
+		virtual void CompressFile( const CString& filePath );
+
 	private:
 
 		CComPtr< IStream > OpenArchiveStream();

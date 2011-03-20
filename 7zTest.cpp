@@ -15,7 +15,7 @@ int Compress()
 		compressor.SetCompressionLevel( SevenZip::CompressionLevel::Fast );
 		//compressor.CompressDirectory( _T( "D:\\Temp\\7zTest\\Test2" ) );
 		//compressor.CompressAllFiles( _T( "D:\\Temp\\7zTest\\Test2" ), false );
-		compressor.CompressFiles( _T( "D:\\Temp\\7zTest\\Test2" ), _T( "*.sql" ) );
+		//compressor.CompressFiles( _T( "D:\\Temp\\7zTest\\Test2" ), _T( "*.sql" ) );
 	}
 	catch ( SevenZip::SevenZipException& ex )
 	{

@@ -11,7 +11,8 @@ namespace SevenZip
 	public:
 
 		static CString GetPath( const CString& filePath );
-		static CString AppendPath( const CString& first, const CString& second );
+		static CString GetFileName( const CString& filePathOrName );
+		static CString AppendPath( const CString& left, const CString& right );
 		static CString ExtractRelativePath( const CString& basePath, const CString& fullPath );
 
 		static bool DirectoryExists( const CString& path );
@@ -19,11 +20,7 @@ namespace SevenZip
 
 		static bool CreateDirectoryTree( const CString& path );
 
-		static std::vector< FilePathInfo > GetFilesInDirectory( const CString& directory );
-		static std::vector< FilePathInfo > GetFilesInDirectory( const CString& directory, const CString& searchPattern );
-
-		static std::vector< FilePathInfo > GetFilesInDirectoryRecursive( const CString& directory );
-		static std::vector< FilePathInfo > GetFilesInDirectoryRecursive( const CString& directory, const CString& searchPattern );
+		static std::vector< FilePathInfo > GetFilesInDirectory( const CAtlString& directory, const CString& searchPattern, bool recursive );
 
 		static CComPtr< IStream > OpenFileToRead( const CString& filePath );
 		static CComPtr< IStream > OpenFileToWrite( const CString& filePath );
