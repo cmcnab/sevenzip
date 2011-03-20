@@ -63,9 +63,6 @@
     <ClInclude Include="SevenZip\PropVariant.h">
       <Filter>SevenZip\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SevenZip\BaseComObject.h">
-      <Filter>SevenZip\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SevenZip\InStreamWrapper.h">
       <Filter>SevenZip\Header Files</Filter>
     </ClInclude>
@@ -117,9 +114,6 @@
       <Filter>SevenZip\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SevenZip\PropVariant.cpp">
-      <Filter>SevenZip\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SevenZip\BaseComObject.cpp">
       <Filter>SevenZip\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SevenZip\InStreamWrapper.cpp">
