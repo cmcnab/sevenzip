@@ -18,4 +18,5 @@
 #include <atlcom.h>
 #include <comdef.h>
 #include <vector>
+#include <deque>
 #include <stack>

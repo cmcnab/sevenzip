@@ -1,14 +1,10 @@
 #include "StdAfx.h"
 #include "PathScanner.h"
+#include "FileSys.h"
 
 
-PathScanner::PathScanner()
+namespace SevenZip
 {
-}
-
-PathScanner::~PathScanner()
-{
-}
 
 void PathScanner::Scan( const CString& root, Callback& cb )
 {
@@ -17,44 +13,45 @@ void PathScanner::Scan( const CString& root, Callback& cb )
 
 void PathScanner::Scan( const CString& root, const CString& searchPattern, Callback& cb )
 {
-	m_pathStack = root;
-	m_searchPattern = searchPattern;
-	
-	cb.BeginScan();
-	DoScan( cb );
-	cb.EndScan();
+	std::deque< CString > directories;
+	directories.push_back( root );
+
+	while ( !directories.empty() )
+	{
+		CString directory = directories.front();
+		directories.pop_front();
+
+		ExamineEntries( directory, searchPattern, directories, cb );
+	}
 }
 
-
-bool PathScanner::DoScan( Callback& cb )
+void PathScanner::ExamineEntries( const CString& directory, const CString& searchPattern, std::deque< CString >& subdirs, Callback& cb )
 {
 	WIN32_FIND_DATA fdata;
-	HANDLE			hFile;
-	bool			recur	= false;
-	bool			exit	= false;
+	CString findStr = FileSys::AppendPath( directory, searchPattern );
 
-	Push( m_searchPattern );
-	hFile = FindFirstFile( m_pathStack, &fdata );
-	Pop();
-
+	HANDLE hFile = FindFirstFile( directory, &fdata );
 	if ( hFile != INVALID_HANDLE_VALUE )
 	{
-		cb.EnterDirectory( m_pathStack );
+		FilePathInfo fpInfo = ConvertFindInfo( directory, fdata );
+		cb.EnterDirectory( directory );
 		
 		do
 		{
-			bool isSpecial = IsSpecialFileName( fdata.cFileName );
+			bool isSpecial = IsSpecialFileName( fpInfo.FileName );
+			bool descend = false;
 
 			if ( !isSpecial )
 			{
 				// Call the main entry callback
 				// If the user set exit to true we need to end the scan now
 				// (including any recursive calls we may be in)
-				CString tmp = m_pathStack;
-				tmp += _T( "\\" );
-				tmp += fdata.cFileName;
+				//CString tmp = m_pathStack;
+				//tmp += _T( "\\" );
+				//tmp += fdata.cFileName;
 
-				recur = cb.Entry( tmp, fdata, exit );
+				bool exit = false;
+				descend = cb.Entry( fpInfo, exit );
 
 				if ( exit )
 				{
@@ -64,43 +61,63 @@ bool PathScanner::DoScan( Callback& cb )
 
 			// If this is a directory and the user returned true, continue
 			// on recursively
-			if ( recur && ( fdata.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY ) && !isSpecial )
+			if ( descend && fpInfo.IsDirectory && !isSpecial )
 			{
-				Push( fdata.cFileName );
-				exit = DoScan( cb );
-				Pop();
+				subdirs.push_back( fpInfo.FilePath );
 			}
 		} 
-		while ( !exit && FindNextFile( hFile, &fdata ) );
+		while ( FindNextFile( hFile, &fdata ) );
 		
-		// TODO: should I not call this callback when exiting?
-		cb.LeaveDirectory( m_pathStack );
-
+		cb.LeaveDirectory( directory );
 		FindClose( hFile );
 	}
-
-	return exit;
 }
 
-void PathScanner::Push( const TCHAR* dir )
+bool PathScanner::IsDirectory( const WIN32_FIND_DATA& fdata )
 {
-	if ( !m_pathStack.IsEmpty() && m_pathStack.Right( 1 ) != _T( "\\" ) )
-	{
-		m_pathStack += _T( "\\" );
-	}
-	m_pathStack += dir;
+	return ( fdata.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY ) != 0;
 }
 
-void PathScanner::Pop()
+FilePathInfo PathScanner::ConvertFindInfo( const CString& directory, const WIN32_FIND_DATA& fdata )
 {
-	int a = m_pathStack.ReverseFind( _T( '\\' ) );
-	if ( a >= 0 )
-	{
-		m_pathStack = m_pathStack.Left( a );
-	}
+	FilePathInfo file;
+	file.FileName		= fdata.cFileName;
+	file.FilePath		= FileSys::AppendPath( directory, file.FileName );
+	file.LastWriteTime	= fdata.ftLastWriteTime;
+	file.CreationTime	= fdata.ftCreationTime;
+	file.LastAccessTime	= fdata.ftLastAccessTime;
+	file.Attributes		= fdata.dwFileAttributes;
+	file.IsDirectory	= IsDirectory( fdata );
+
+	ULARGE_INTEGER size;
+	size.LowPart = fdata.nFileSizeLow;
+	size.HighPart = fdata.nFileSizeHigh;
+	file.Size = size.QuadPart;
+
+	return file;
 }
+
+//void PathScanner::Push( const TCHAR* dir )
+//{
+//	if ( !m_pathStack.IsEmpty() && m_pathStack.Right( 1 ) != _T( "\\" ) )
+//	{
+//		m_pathStack += _T( "\\" );
+//	}
+//	m_pathStack += dir;
+//}
+//
+//void PathScanner::Pop()
+//{
+//	int a = m_pathStack.ReverseFind( _T( '\\' ) );
+//	if ( a >= 0 )
+//	{
+//		m_pathStack = m_pathStack.Left( a );
+//	}
+//}
 
 bool PathScanner::IsSpecialFileName( const TCHAR* fileName )
 {
 	return _tcscmp( fileName, _T( "." ) ) == 0 || _tcscmp( fileName, _T( ".." ) ) == 0;
+}
+
 }
