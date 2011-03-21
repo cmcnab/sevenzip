@@ -21,13 +21,14 @@ public:
 
 	const std::vector< FilePathInfo >& GetFiles() { return m_files; }
 
-	virtual bool Entry( const FilePathInfo& file, bool& exit )
+	virtual bool ShouldDescend( const FilePathInfo& directory )
 	{
-		if ( m_recursive || !file.IsDirectory )
-		{
-			m_files.push_back( file );
-		}
 		return m_recursive;
+	}
+
+	virtual void ExamineFile( const FilePathInfo& file, bool& exit )
+	{
+		m_files.push_back( file );
 	}
 };
 

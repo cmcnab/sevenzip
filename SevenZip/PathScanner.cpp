@@ -21,56 +21,80 @@ void PathScanner::Scan( const CString& root, const CString& searchPattern, Callb
 		CString directory = directories.front();
 		directories.pop_front();
 
-		ExamineEntries( directory, searchPattern, directories, cb );
+		if ( ExamineFiles( directory, searchPattern, cb ) )
+		{
+			break;
+		}
+
+		ExamineDirectories( directory, directories, cb );
 	}
 }
 
-void PathScanner::ExamineEntries( const CString& directory, const CString& searchPattern, std::deque< CString >& subdirs, Callback& cb )
+bool PathScanner::ExamineFiles( const CString& directory, const CString& searchPattern, Callback& cb )
 {
-	WIN32_FIND_DATA fdata;
 	CString findStr = FileSys::AppendPath( directory, searchPattern );
+	bool exit = false;
 
-	HANDLE hFile = FindFirstFile( directory, &fdata );
-	if ( hFile != INVALID_HANDLE_VALUE )
+	WIN32_FIND_DATA fdata;
+	HANDLE hFile = FindFirstFile( findStr, &fdata );
+	if ( hFile == INVALID_HANDLE_VALUE )
+	{
+		return exit;
+	}
+
+	cb.EnterDirectory( directory );
+
+	do
 	{
 		FilePathInfo fpInfo = ConvertFindInfo( directory, fdata );
-		cb.EnterDirectory( directory );
-		
-		do
+		if ( !fpInfo.IsDirectory && !IsSpecialFileName( fpInfo.FileName ) )
 		{
-			bool isSpecial = IsSpecialFileName( fpInfo.FileName );
-			bool descend = false;
+			cb.ExamineFile( fpInfo, exit );
+		}
+	} 
+	while ( !exit && FindNextFile( hFile, &fdata ) );
 
-			if ( !isSpecial )
-			{
-				// Call the main entry callback
-				// If the user set exit to true we need to end the scan now
-				// (including any recursive calls we may be in)
-				//CString tmp = m_pathStack;
-				//tmp += _T( "\\" );
-				//tmp += fdata.cFileName;
-
-				bool exit = false;
-				descend = cb.Entry( fpInfo, exit );
-
-				if ( exit )
-				{
-					break;
-				}
-			}
-
-			// If this is a directory and the user returned true, continue
-			// on recursively
-			if ( descend && fpInfo.IsDirectory && !isSpecial )
-			{
-				subdirs.push_back( fpInfo.FilePath );
-			}
-		} 
-		while ( FindNextFile( hFile, &fdata ) );
-		
+	if ( !exit )
+	{
 		cb.LeaveDirectory( directory );
-		FindClose( hFile );
 	}
+
+	FindClose( hFile );
+	return exit;
+}
+
+void PathScanner::ExamineDirectories( const CString& directory, std::deque< CString >& subDirs, Callback& cb )
+{
+	CString findStr = FileSys::AppendPath( directory, _T( "*" ) );
+
+	WIN32_FIND_DATA fdata;
+	HANDLE hFile = FindFirstFile( findStr, &fdata );
+	if ( hFile == INVALID_HANDLE_VALUE )
+	{
+		return;
+	}
+
+	do
+	{
+		FilePathInfo fpInfo = ConvertFindInfo( directory, fdata );
+		if ( fpInfo.IsDirectory && !IsSpecialFileName( fpInfo.FileName ) && cb.ShouldDescend( fpInfo ) )
+		{
+			subDirs.push_back( fpInfo.FilePath );
+		}
+	} 
+	while ( FindNextFile( hFile, &fdata ) );
+		
+	FindClose( hFile );
+}
+
+bool PathScanner::IsAllFilesPattern( const CString& searchPattern )
+{
+	return searchPattern == _T( "*" ) || searchPattern == _T( "*.*" );
+}
+
+bool PathScanner::IsSpecialFileName( const CString& fileName )
+{
+	return fileName == _T( "." ) || fileName == _T( ".." );
 }
 
 bool PathScanner::IsDirectory( const WIN32_FIND_DATA& fdata )
@@ -95,29 +119,6 @@ FilePathInfo PathScanner::ConvertFindInfo( const CString& directory, const WIN32
 	file.Size = size.QuadPart;
 
 	return file;
-}
-
-//void PathScanner::Push( const TCHAR* dir )
-//{
-//	if ( !m_pathStack.IsEmpty() && m_pathStack.Right( 1 ) != _T( "\\" ) )
-//	{
-//		m_pathStack += _T( "\\" );
-//	}
-//	m_pathStack += dir;
-//}
-//
-//void PathScanner::Pop()
-//{
-//	int a = m_pathStack.ReverseFind( _T( '\\' ) );
-//	if ( a >= 0 )
-//	{
-//		m_pathStack = m_pathStack.Left( a );
-//	}
-//}
-
-bool PathScanner::IsSpecialFileName( const TCHAR* fileName )
-{
-	return _tcscmp( fileName, _T( "." ) ) == 0 || _tcscmp( fileName, _T( ".." ) ) == 0;
 }
 
 }
