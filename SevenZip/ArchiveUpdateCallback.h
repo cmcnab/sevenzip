@@ -9,6 +9,8 @@
 
 namespace SevenZip
 {
+namespace intl
+{
 	class ArchiveUpdateCallback : public IArchiveUpdateCallback, public ICryptoGetTextPassword2, public ICompressProgressInfo
 	{
 	private:
@@ -42,4 +44,5 @@ namespace SevenZip
 		// ICompressProgressInfo
 		STDMETHOD(SetRatioInfo)( const UInt64* inSize, const UInt64* outSize );
 	};
+}
 }

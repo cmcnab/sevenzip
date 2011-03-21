@@ -24,6 +24,18 @@ CString StrFmt( const TCHAR* format, ... )
 	return result;
 }
 
+CString GetWinErrMsg( const CString& contextMessage, DWORD lastError )
+{
+	// TODO: use FormatMessage to get the appropriate message from the 
+	return StrFmt( _T( "%s: GetLastError = %lu" ), contextMessage.GetString(), lastError );
+}
+
+CString GetCOMErrMsg( const CString& contextMessage, HRESULT lastError )
+{
+	// TODO: use FormatMessage to get the appropriate message from the 
+	return StrFmt( _T( "%s: HRESULT = 0x%08X" ), contextMessage.GetString(), lastError );
+}
+
 SevenZipException::SevenZipException()
 {
 }
@@ -40,22 +52,6 @@ SevenZipException::~SevenZipException()
 const CString& SevenZipException::GetMessage() const
 {
 	return m_message;
-}
-
-
-
-SevenZipWindowsException::SevenZipWindowsException( const CString& contextMessage, DWORD lastError )
-{
-	// TODO: use FormatMessage to get the appropriate message from the 
-	m_message.Format( _T( "%s: GetLastError = %lu" ), contextMessage.GetString(), lastError );
-}
-
-
-
-SevenZipCOMException::SevenZipCOMException( const CString& contextMessage, HRESULT lastError )
-{
-	// TODO: use FormatMessage to get the appropriate message from the 
-	m_message.Format( _T( "%s: HRESULT = 0x%08X" ), contextMessage.GetString(), lastError );
 }
 
 }

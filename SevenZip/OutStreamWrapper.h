@@ -6,6 +6,8 @@
 
 namespace SevenZip
 {
+namespace intl
+{
 	class OutStreamWrapper : public IOutStream
 	{
 	private:
@@ -29,4 +31,5 @@ namespace SevenZip
 		STDMETHOD(Seek)( Int64 offset, UInt32 seekOrigin, UInt64* newPosition );
 		STDMETHOD(SetSize)( UInt64 newSize );
 	};
+}
 }

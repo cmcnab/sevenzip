@@ -3,6 +3,8 @@
 
 namespace SevenZip
 {
+namespace intl
+{
 	struct FileInfo
 	{
 		CString		FileName;
@@ -18,4 +20,5 @@ namespace SevenZip
 	{
 		CString		FilePath;
 	};
+}
 }

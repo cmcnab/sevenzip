@@ -6,6 +6,8 @@
 
 namespace SevenZip
 {
+namespace intl
+{
 	class InStreamWrapper : public IInStream, public IStreamGetSize
 	{
 	private:
@@ -31,4 +33,5 @@ namespace SevenZip
 		// IStreamGetSize
 		STDMETHOD(GetSize)( UInt64* size );
 	};
+}
 }

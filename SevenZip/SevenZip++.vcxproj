@@ -70,9 +70,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="ArchiveExtractCallback.h" />
-    <ClInclude Include="ArchiveFileInfo.h" />
     <ClInclude Include="ArchiveOpenCallback.h" />
-    <ClInclude Include="ArchiveProperty.h" />
     <ClInclude Include="ArchiveUpdateCallback.h" />
     <ClInclude Include="CompressionLevel.h" />
     <ClInclude Include="Enum.h" />

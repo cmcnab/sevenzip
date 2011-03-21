@@ -24,13 +24,7 @@
     <ClInclude Include="ArchiveExtractCallback.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ArchiveFileInfo.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ArchiveOpenCallback.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ArchiveProperty.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ArchiveUpdateCallback.h">

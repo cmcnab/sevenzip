@@ -7,6 +7,8 @@
 
 namespace SevenZip
 {
+namespace intl
+{
 	class ArchiveOpenCallback : public IArchiveOpenCallback, public ICryptoGetTextPassword
 	{
 	private:
@@ -29,4 +31,5 @@ namespace SevenZip
 		// ICryptoGetTextPassword
 		STDMETHOD(CryptoGetTextPassword)( BSTR* password );
 	};
+}
 }

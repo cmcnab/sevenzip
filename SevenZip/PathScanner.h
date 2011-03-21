@@ -6,6 +6,8 @@
 
 namespace SevenZip
 {
+namespace intl
+{
 	class PathScanner
 	{
 	public:
@@ -39,4 +41,5 @@ namespace SevenZip
 		static bool IsDirectory( const WIN32_FIND_DATA& fdata );
 		static FilePathInfo ConvertFindInfo( const CString& directory, const WIN32_FIND_DATA& fdata );
 	};
+}
 }

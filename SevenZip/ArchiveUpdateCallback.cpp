@@ -7,6 +7,8 @@
 
 namespace SevenZip
 {
+namespace intl
+{
 
 ArchiveUpdateCallback::ArchiveUpdateCallback( const CString& dirPrefix, const std::vector< FilePathInfo >& filePaths )
 	: m_refCount( 0 )
@@ -172,4 +174,5 @@ STDMETHODIMP ArchiveUpdateCallback::SetRatioInfo( const UInt64* inSize, const UI
 	return S_OK;
 }
 
+}
 }

@@ -29,7 +29,7 @@ void SevenZipLibrary::Load( const CString& libraryPath )
 	m_dll = LoadLibrary( libraryPath );
 	if ( m_dll == NULL )
 	{
-		throw SevenZipWindowsException( _T( "LoadLibrary" ), GetLastError() );
+		throw SevenZipException( GetWinErrMsg( _T( "LoadLibrary" ), GetLastError() ) );
 	}
 
 	m_func = reinterpret_cast< CreateObjectFunc >( GetProcAddress( m_dll, "CreateObject" ) );
@@ -59,7 +59,7 @@ void SevenZipLibrary::CreateObject( const GUID& clsID, const GUID& interfaceID, 
 	HRESULT hr = m_func( &clsID, &interfaceID, outObject );
 	if ( FAILED( hr ) )
 	{
-		throw SevenZipCOMException( _T( "CreateObject" ), hr );
+		throw SevenZipException( GetCOMErrMsg( _T( "CreateObject" ), hr ) );
 	}
 }
 

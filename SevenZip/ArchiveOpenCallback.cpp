@@ -4,6 +4,8 @@
 
 namespace SevenZip
 {
+namespace intl
+{
 
 ArchiveOpenCallback::ArchiveOpenCallback()
 	: m_refCount( 0 )
@@ -70,4 +72,5 @@ STDMETHODIMP ArchiveOpenCallback::CryptoGetTextPassword( BSTR* password )
 	return E_ABORT;
 }
 
+}
 }

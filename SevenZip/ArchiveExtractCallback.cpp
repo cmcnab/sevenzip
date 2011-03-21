@@ -7,6 +7,8 @@
 
 namespace SevenZip
 {
+namespace intl
+{
 
 const CString EmptyFileAlias = _T( "[Content]" );
 
@@ -281,4 +283,5 @@ void ArchiveExtractCallback::GetPropertySize( UInt32 index )
 	m_hasNewFileSize = true;
 }
 
+}
 }

@@ -7,6 +7,8 @@
 namespace SevenZip
 {
 	CString StrFmt( const TCHAR* format, ... );
+	CString GetWinErrMsg( const CString& contextMessage, DWORD lastError );
+	CString GetCOMErrMsg( const CString& contextMessage, HRESULT lastError );
 
 
 	class SevenZipException
@@ -22,21 +24,5 @@ namespace SevenZip
 		virtual ~SevenZipException();
 
 		const CString& GetMessage() const;
-	};
-
-
-	class SevenZipWindowsException : public SevenZipException
-	{
-	public:
-
-		SevenZipWindowsException( const CString& contextMessage, DWORD lastError );
-	};
-
-
-	class SevenZipCOMException : public SevenZipException
-	{
-	public:
-
-		SevenZipCOMException( const CString& contextMessage, HRESULT lastError );
 	};
 }

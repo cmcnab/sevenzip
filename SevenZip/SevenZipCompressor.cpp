@@ -10,6 +10,9 @@
 namespace SevenZip
 {
 
+using namespace intl;
+
+
 const CString SearchPatternAllFiles = _T( "*" );
 
 
@@ -110,7 +113,7 @@ void SevenZipCompressor::CompressFilesToArchive( const CComPtr< IStream >& archi
 	HRESULT hr = archiver->UpdateItems( outFile, filePaths.size(), callback );
 	if ( hr != S_OK ) // returning S_FALSE also indicates error
 	{
-		throw SevenZipCOMException( _T( "Create archive" ), hr );
+		throw SevenZipException( GetCOMErrMsg( _T( "Create archive" ), hr ) );
 	}
 }
 
@@ -130,7 +133,7 @@ void SevenZipCompressor::SetCompressionProperties( IUnknown* outArchive )
 	HRESULT hr = setter->SetProperties( names, values, numProps );
 	if ( hr != S_OK )
 	{
-		throw SevenZipCOMException( _T( "Setting compression properties" ), hr );
+		throw SevenZipException( GetCOMErrMsg( _T( "Setting compression properties" ), hr ) );
 	}
 }
 

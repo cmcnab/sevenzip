@@ -6,6 +6,8 @@
 
 namespace SevenZip
 {
+namespace intl
+{
 	class FileSys
 	{
 	public:
@@ -25,4 +27,5 @@ namespace SevenZip
 		static CComPtr< IStream > OpenFileToRead( const CString& filePath );
 		static CComPtr< IStream > OpenFileToWrite( const CString& filePath );
 	};
+}
 }

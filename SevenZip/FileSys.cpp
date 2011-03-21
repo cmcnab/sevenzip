@@ -5,6 +5,8 @@
 
 namespace SevenZip
 {
+namespace intl
+{
 
 class ScannerCallback : public PathScanner::Callback
 {
@@ -166,4 +168,5 @@ CComPtr< IStream > FileSys::OpenFileToWrite( const CString& filePath )
 	return fileStream;
 }
 
+}
 }

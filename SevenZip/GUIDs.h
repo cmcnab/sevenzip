@@ -3,6 +3,8 @@
 
 namespace SevenZip
 {
+namespace intl
+{
 	// IStream.h
 
 	// {23170F69-40C1-278A-0000-000300010000}
@@ -76,4 +78,5 @@ namespace SevenZip
 	// {23170F69-40C1-278A-1000-000110070000}
 	DEFINE_GUID(CLSID_CFormat7z,
 		0x23170F69, 0x40C1, 0x278A, 0x10, 0x00, 0x00, 0x01, 0x10, 0x07, 0x00, 0x00);
+}
 }

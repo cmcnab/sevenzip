@@ -5,6 +5,8 @@
 
 namespace SevenZip
 {
+namespace intl
+{
 
 void PathScanner::Scan( const CString& root, Callback& cb )
 {
@@ -121,4 +123,5 @@ FilePathInfo PathScanner::ConvertFindInfo( const CString& directory, const WIN32
 	return file;
 }
 
+}
 }

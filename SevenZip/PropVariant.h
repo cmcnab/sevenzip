@@ -6,6 +6,8 @@
 
 namespace SevenZip
 {
+namespace intl
+{
 	class CPropVariant : public PROPVARIANT
 	{
 	public:
@@ -48,4 +50,5 @@ namespace SevenZip
 
 		int Compare(const CPropVariant &a1);
 	};
+}
 }

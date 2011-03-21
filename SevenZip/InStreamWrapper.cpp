@@ -4,6 +4,8 @@
 
 namespace SevenZip
 {
+namespace intl
+{
 
 InStreamWrapper::InStreamWrapper( const CComPtr< IStream >& baseStream )
 	: m_refCount( 0 )
@@ -100,4 +102,5 @@ STDMETHODIMP InStreamWrapper::GetSize( UInt64* size )
 	return hr;
 }
 
+}
 }

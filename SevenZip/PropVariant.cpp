@@ -5,6 +5,8 @@
 
 namespace SevenZip
 {
+namespace intl
+{
 
 CPropVariant::CPropVariant(const PROPVARIANT &varSrc)
 {
@@ -237,4 +239,5 @@ int CPropVariant::Compare(const CPropVariant &a)
   }
 }
 
+}
 }

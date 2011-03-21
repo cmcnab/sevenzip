@@ -10,6 +10,9 @@
 namespace SevenZip
 {
 
+using namespace intl;
+
+
 SevenZipExtractor::SevenZipExtractor( const SevenZipLibrary& library, const CString& archivePath )
 	: m_library( library )
 	, m_archivePath( archivePath )
@@ -42,7 +45,7 @@ void SevenZipExtractor::ExtractArchive( const CComPtr< IStream >& archiveStream,
 	HRESULT hr = archive->Open( inFile, 0, openCallback );
 	if ( hr != S_OK )
 	{
-		throw SevenZipCOMException( _T( "Open archive" ), hr );
+		throw SevenZipException( GetCOMErrMsg( _T( "Open archive" ), hr ) );
 	}
 
 	CComPtr< ArchiveExtractCallback > extractCallback = new ArchiveExtractCallback( archive, destDirectory );
@@ -50,7 +53,7 @@ void SevenZipExtractor::ExtractArchive( const CComPtr< IStream >& archiveStream,
 	hr = archive->Extract( nullptr, -1, false, extractCallback );
 	if ( hr != S_OK ) // returning S_FALSE also indicates error
 	{
-		throw SevenZipCOMException( _T( "Extract archive" ), hr );
+		throw SevenZipException( GetCOMErrMsg( _T( "Extract archive" ), hr ) );
 	}
 }
 

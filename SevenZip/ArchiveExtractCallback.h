@@ -7,6 +7,8 @@
 
 namespace SevenZip
 {
+namespace intl
+{
 	class ArchiveExtractCallback : public IArchiveExtractCallback, public ICryptoGetTextPassword
 	{
 	private:
@@ -57,4 +59,5 @@ namespace SevenZip
 		void GetPropertyModifiedTime( UInt32 index );
 		void GetPropertySize( UInt32 index );
 	};
+}
 }
