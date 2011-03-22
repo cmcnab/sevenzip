@@ -5,17 +5,12 @@
 
 #pragma once
 
-#include "targetver.h"
+//#include "targetver.h"
 
-#include <stdio.h>
+//#include <stdio.h>
 #include <tchar.h>
-
-#define WIN32_LEAN_AND_MEAN
-#include <Windows.h>
-#include <ShlObj.h>
-
 #include <atlstr.h>
-#include <atlcom.h>
-#include <comdef.h>
 #include <vector>
-#include <stack>
+
+
+// TODO: reference additional headers your program requires here

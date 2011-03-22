@@ -1,6 +1,6 @@
 #include "stdafx.h"
-#include "SevenZip/SevenZipCompressor.h"
-#include "SevenZip/SevenZipExtractor.h"
+#include "../../SevenZip++/SevenZipCompressor.h"
+#include "../../SevenZip++/SevenZipExtractor.h"
 
 
 int Compress()
@@ -45,8 +45,7 @@ int Extract()
 	return 0;
 }
 
-int _tmain(int argc, _TCHAR* argv[])
+int _tmain( int argc, _TCHAR* argv[] )
 {
 	return Compress();
 }
-
