@@ -62,7 +62,7 @@ STDMETHODIMP OutStreamWrapper::Write( const void* data, UInt32 size, UInt32* pro
 {
 	ULONG written = 0;
 	HRESULT hr = m_baseStream->Write( data, size, &written );
-	if ( processedSize != nullptr )
+	if ( processedSize != NULL )
 	{
 		*processedSize = written;
 	}
@@ -76,7 +76,7 @@ STDMETHODIMP OutStreamWrapper::Seek( Int64 offset, UInt32 seekOrigin, UInt64* ne
 
 	move.QuadPart = offset;
 	HRESULT hr = m_baseStream->Seek( move, seekOrigin, &newPos );
-	if ( newPosition != nullptr )
+	if ( newPosition != NULL )
 	{
 		*newPosition =  newPos.QuadPart;
 	}

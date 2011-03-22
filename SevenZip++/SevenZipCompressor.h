@@ -1,6 +1,7 @@
 #pragma once
 
 
+#include <vector>
 #include "SevenZipLibrary.h"
 #include "FileInfo.h"
 #include "CompressionLevel.h"

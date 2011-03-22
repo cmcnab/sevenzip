@@ -1,3 +1,5 @@
+// This file is based on the following file from the LZMA SDK (http://www.7-zip.org/sdk.html):
+//   ./CPP/7zip/UI/Client7z/Client7z.cpp
 #include "StdAfx.h"
 #include "ArchiveUpdateCallback.h"
 #include "PropVariant.h"
@@ -82,6 +84,7 @@ STDMETHODIMP ArchiveUpdateCallback::SetCompleted( const UInt64* completeValue )
 STDMETHODIMP ArchiveUpdateCallback::GetUpdateItemInfo( UInt32 index, Int32* newData, Int32* newProperties, UInt32* indexInArchive )
 {
 	// Setting info for Create mode (vs. Append mode).
+	// TODO: support append mode
 	if ( newData != NULL )
 	{
 		*newData = 1;
@@ -146,7 +149,7 @@ STDMETHODIMP ArchiveUpdateCallback::GetStream( UInt32 index, ISequentialInStream
 	}
 
 	CComPtr< IStream > fileStream = FileSys::OpenFileToRead( fileInfo.FilePath );
-	if ( fileStream == nullptr )
+	if ( fileStream == NULL )
 	{
 		return HRESULT_FROM_WIN32( GetLastError() );
 	}
@@ -164,6 +167,7 @@ STDMETHODIMP ArchiveUpdateCallback::SetOperationResult( Int32 operationResult )
 
 STDMETHODIMP ArchiveUpdateCallback::CryptoGetTextPassword2( Int32* passwordIsDefined, BSTR* password )
 {
+	// TODO: support passwords
 	*passwordIsDefined = 0;
 	*password = SysAllocString( _T( "" ) );
 	return *password != 0 ? S_OK : E_OUTOFMEMORY;

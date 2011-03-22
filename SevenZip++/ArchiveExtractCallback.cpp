@@ -1,8 +1,11 @@
+// This file is based on the following file from the LZMA SDK (http://www.7-zip.org/sdk.html):
+//   ./CPP/7zip/UI/Client7z/Client7z.cpp
 #include "StdAfx.h"
 #include "ArchiveExtractCallback.h"
 #include "PropVariant.h"
 #include "FileSys.h"
 #include "OutStreamWrapper.h"
+#include <comdef.h>
 
 
 namespace SevenZip
@@ -79,6 +82,7 @@ STDMETHODIMP ArchiveExtractCallback::GetStream( UInt32 index, ISequentialOutStre
 {
 	try
 	{
+		// Retrieve all the various properties for the file at this index.
 		GetPropertyFilePath( index );
 		if ( askExtractMode != NArchive::NExtract::NAskMode::kExtract )
 		{
@@ -95,20 +99,21 @@ STDMETHODIMP ArchiveExtractCallback::GetStream( UInt32 index, ISequentialOutStre
 		return ex.Error();
 	}
 
+	m_absPath = FileSys::AppendPath( m_directory, m_relPath );
+
 	if ( m_isDir )
 	{
-		m_absPath.Empty();
-		*outStream = nullptr;
+		// Creating the directory here supports having empty directories.
+		FileSys::CreateDirectoryTree( m_absPath );
+		*outStream = NULL;
 		return S_OK;
 	}
-
-	m_absPath = FileSys::AppendPath( m_directory, m_relPath );
 
 	CString absDir = FileSys::GetPath( m_absPath );
 	FileSys::CreateDirectoryTree( absDir );
 	
 	CComPtr< IStream > fileStream = FileSys::OpenFileToWrite( m_absPath );
-	if ( fileStream == nullptr )
+	if ( fileStream == NULL )
 	{
 		m_absPath.Empty();
 		return HRESULT_FROM_WIN32( GetLastError() );
@@ -152,6 +157,7 @@ STDMETHODIMP ArchiveExtractCallback::SetOperationResult( Int32 operationResult )
 
 STDMETHODIMP ArchiveExtractCallback::CryptoGetTextPassword( BSTR* password )
 {
+	// TODO: support passwords
 	return E_ABORT;
 }
 

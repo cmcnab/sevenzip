@@ -1,51 +1,77 @@
-#include "stdafx.h"
+#include <stdio.h>
+#include <tchar.h>
 #include "../../SevenZip++/SevenZipCompressor.h"
 #include "../../SevenZip++/SevenZipExtractor.h"
 
 
-int Compress()
+int PrintUsage()
 {
-	try
-	{
-		SevenZip::SevenZipLibrary lib;
-		lib.Load();
-
-		SevenZip::SevenZipCompressor compressor( lib, _T( "D:\\Temp\\CppFiles.7z" ) );
-
-		compressor.SetCompressionLevel( SevenZip::CompressionLevel::Fast );
-		//compressor.CompressDirectory( _T( "D:\\Temp\\7zTest\\Test2" ) );
-		//compressor.CompressAllFiles( _T( "D:\\Temp\\7zTest\\Test2" ), false );
-		compressor.CompressFiles( _T( "D:\\Temp\\Source" ), _T( "*.cpp" ) );
-	}
-	catch ( SevenZip::SevenZipException& ex )
-	{
-		_tprintf( _T( "Error: %s\n" ), ex.GetMessage().GetString() );
-		return 1;
-	}
-
+	_tprintf(_T("Simple.exe [cx] ...\n"));
+	_tprintf(_T("  c <archiveName> <targetDirectory>      -- Creates an archive.\n"));
+	_tprintf(_T("  x <archiveName> <destinationDirectory> -- Extracts an archive.\n\n"));
 	return 0;
 }
 
-int Extract()
+int CreateArchive(int argc, TCHAR** argv)
 {
-	try
+	if (argc < 4)
 	{
-		SevenZip::SevenZipLibrary lib;
-		lib.Load();
-
-		SevenZip::SevenZipExtractor extractor( lib, _T( "D:\\Temp\\7zTest\\Test1.7z" ) );
-		extractor.ExtractArchive( _T( "D:\\Temp\\7zTest\\Test1-Fast" ) );
-	}
-	catch ( SevenZip::SevenZipException& ex )
-	{
-		_tprintf( _T( "Error: %s\n" ), ex.GetMessage().GetString() );
-		return 1;
+		return PrintUsage();
 	}
 
+	const TCHAR* archiveName = argv[2];
+	const TCHAR* targetDir = argv[3];
+	// Note I'm lazily assuming the target is a directory rather than a file.
+
+	SevenZip::SevenZipLibrary lib;
+	lib.Load();
+
+	SevenZip::SevenZipCompressor compressor(lib, archiveName);
+	compressor.CompressDirectory(targetDir);
 	return 0;
 }
 
-int _tmain( int argc, _TCHAR* argv[] )
+int ExtractArchive(int argc, TCHAR** argv)
 {
-	return Compress();
+	if (argc < 4)
+	{
+		return PrintUsage();
+	}
+
+	const TCHAR* archiveName = argv[2];
+	const TCHAR* destination = argv[3];
+
+	SevenZip::SevenZipLibrary lib;
+	lib.Load();
+
+	SevenZip::SevenZipExtractor extractor(lib, archiveName);
+	extractor.ExtractArchive(destination);
+	return 0;
+}
+
+int _tmain(int argc, _TCHAR* argv[])
+{
+	if (argc < 2)
+	{
+		return PrintUsage();
+	}
+
+	try
+	{
+		switch (argv[1][0])
+		{
+		case _T('c'):
+			return CreateArchive(argc, argv);
+		case _T('x'):
+			return ExtractArchive(argc, argv);
+		default:
+			break;
+		}
+	}
+	catch (SevenZip::SevenZipException& ex)
+	{
+		_tprintf(_T("Error: %s\n"), ex.GetMessage().GetString());
+	}
+
+	return PrintUsage();
 }

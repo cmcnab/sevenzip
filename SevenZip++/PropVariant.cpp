@@ -1,6 +1,8 @@
+// This file is based on the following file from the LZMA SDK (http://www.7-zip.org/sdk.html):
+//   ./CPP/Windows/PropVariant.cpp
 #include "stdafx.h"
 #include "PropVariant.h"
-#include <7zip/../Common/Defs.h>
+#include <Common/Defs.h>
 
 
 namespace SevenZip

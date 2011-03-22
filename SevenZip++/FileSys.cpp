@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "FileSys.h"
 #include "PathScanner.h"
+#include <ShlObj.h>
 
 
 namespace SevenZip
@@ -123,11 +124,13 @@ CString FileSys::ExtractRelativePath( const CString& basePath, const CString& fu
 
 bool FileSys::DirectoryExists( const CString& path )
 {
+	// TODO:
 	return true;
 }
 
 bool FileSys::IsDirectoryEmptyRecursive( const CString& path )
 {
+	// TODO:
 	return false;
 }
 
@@ -150,7 +153,7 @@ CComPtr< IStream > FileSys::OpenFileToRead( const CString& filePath )
 
 	if ( FAILED( SHCreateStreamOnFileEx( filePath, STGM_READ, FILE_ATTRIBUTE_NORMAL, FALSE, NULL, &fileStream ) ) )
 	{
-		return nullptr;
+		return NULL;
 	}
 
 	return fileStream;
@@ -162,7 +165,7 @@ CComPtr< IStream > FileSys::OpenFileToWrite( const CString& filePath )
 
 	if ( FAILED( SHCreateStreamOnFileEx( filePath, STGM_CREATE | STGM_WRITE, FILE_ATTRIBUTE_NORMAL, TRUE, NULL, &fileStream ) ) )
 	{
-		return nullptr;
+		return NULL;
 	}
 
 	return fileStream;

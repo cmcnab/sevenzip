@@ -26,7 +26,7 @@ SevenZipExtractor::~SevenZipExtractor()
 void SevenZipExtractor::ExtractArchive( const CString& destDirectory )
 {
 	CComPtr< IStream > fileStream = FileSys::OpenFileToRead( m_archivePath );
-	if ( fileStream == nullptr )
+	if ( fileStream == NULL )
 	{
 		throw SevenZipException( StrFmt( _T( "Could not open archive \"%s\"" ), m_archivePath.GetString() ) );
 	}
@@ -50,7 +50,7 @@ void SevenZipExtractor::ExtractArchive( const CComPtr< IStream >& archiveStream,
 
 	CComPtr< ArchiveExtractCallback > extractCallback = new ArchiveExtractCallback( archive, destDirectory );
 
-	hr = archive->Extract( nullptr, -1, false, extractCallback );
+	hr = archive->Extract( NULL, -1, false, extractCallback );
 	if ( hr != S_OK ) // returning S_FALSE also indicates error
 	{
 		throw SevenZipException( GetCOMErrMsg( _T( "Extract archive" ), hr ) );

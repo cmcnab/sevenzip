@@ -69,7 +69,7 @@ STDMETHODIMP InStreamWrapper::Read( void* data, UInt32 size, UInt32* processedSi
 {
 	ULONG read = 0;
 	HRESULT hr = m_baseStream->Read( data, size, &read );
-	if ( processedSize != nullptr )
+	if ( processedSize != NULL )
 	{
 		*processedSize = read;
 	}
@@ -84,7 +84,7 @@ STDMETHODIMP InStreamWrapper::Seek( Int64 offset, UInt32 seekOrigin, UInt64* new
 
 	move.QuadPart = offset;
 	HRESULT hr = m_baseStream->Seek( move, seekOrigin, &newPos );
-	if ( newPosition != nullptr )
+	if ( newPosition != NULL )
 	{
 		*newPosition =  newPos.QuadPart;
 	}

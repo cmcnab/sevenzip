@@ -1,3 +1,5 @@
+// This file is based on the following file from the LZMA SDK (http://www.7-zip.org/sdk.html):
+//   ./CPP/7zip/UI/Client7z/Client7z.cpp
 #include "StdAfx.h"
 #include "ArchiveOpenCallback.h"
 
@@ -69,6 +71,7 @@ STDMETHODIMP ArchiveOpenCallback::SetCompleted( const UInt64* files, const UInt6
 
 STDMETHODIMP ArchiveOpenCallback::CryptoGetTextPassword( BSTR* password )
 {
+	// TODO: support passwords
 	return E_ABORT;
 }
 

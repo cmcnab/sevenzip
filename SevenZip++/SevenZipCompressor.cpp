@@ -77,7 +77,7 @@ void SevenZipCompressor::CompressFile( const CString& filePath )
 CComPtr< IStream > SevenZipCompressor::OpenArchiveStream()
 {
 	CComPtr< IStream > fileStream = FileSys::OpenFileToWrite( m_archivePath );
-	if ( fileStream == nullptr )
+	if ( fileStream == NULL )
 	{
 		throw SevenZipException( StrFmt( _T( "Could not create archive \"%s\"" ), m_archivePath.GetString() ) );
 	}
@@ -125,7 +125,7 @@ void SevenZipCompressor::SetCompressionProperties( IUnknown* outArchive )
 
 	CComPtr< ISetProperties > setter;
 	outArchive->QueryInterface( IID_ISetProperties, reinterpret_cast< void** >( &setter ) );
-	if ( setter == nullptr )
+	if ( setter == NULL )
 	{
 		throw SevenZipException( _T( "Archive does not support setting compression properties" ) );
 	}

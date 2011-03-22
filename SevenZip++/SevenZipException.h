@@ -2,6 +2,7 @@
 
 
 #include <exception>
+#include "String.h"
 
 
 namespace SevenZip
