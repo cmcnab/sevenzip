@@ -119,7 +119,7 @@ CString FileSys::ExtractRelativePath( const CString& basePath, const CString& fu
 		return CString();
 	}
 
-	return fullPath.Mid( basePath.GetLength() + 1 );
+	return fullPath.Mid( basePath.GetLength() );
 }
 
 bool FileSys::DirectoryExists( const CString& path )
