@@ -13,20 +13,20 @@ namespace intl
 	{
 	public:
 
-		static CString GetPath( const CString& filePath );
-		static CString GetFileName( const CString& filePathOrName );
-		static CString AppendPath( const CString& left, const CString& right );
-		static CString ExtractRelativePath( const CString& basePath, const CString& fullPath );
+		static TString GetPath( const TString& filePath );
+		static TString GetFileName( const TString& filePathOrName );
+		static TString AppendPath( const TString& left, const TString& right );
+		static TString ExtractRelativePath( const TString& basePath, const TString& fullPath );
 
-		static bool DirectoryExists( const CString& path );
-		static bool IsDirectoryEmptyRecursive( const CString& path );
+		static bool DirectoryExists( const TString& path );
+		static bool IsDirectoryEmptyRecursive( const TString& path );
 
-		static bool CreateDirectoryTree( const CString& path );
+		static bool CreateDirectoryTree( const TString& path );
 
-		static std::vector< FilePathInfo > GetFilesInDirectory( const CAtlString& directory, const CString& searchPattern, bool recursive );
+		static std::vector< FilePathInfo > GetFilesInDirectory( const CAtlString& directory, const TString& searchPattern, bool recursive );
 
-		static CComPtr< IStream > OpenFileToRead( const CString& filePath );
-		static CComPtr< IStream > OpenFileToWrite( const CString& filePath );
+		static CComPtr< IStream > OpenFileToRead( const TString& filePath );
+		static CComPtr< IStream > OpenFileToWrite( const TString& filePath );
 	};
 }
 }

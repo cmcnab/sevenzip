@@ -42,7 +42,7 @@ public:
 };
 
 
-CString FileSys::GetPath( const CString& filePath )
+TString FileSys::GetPath( const TString& filePath )
 {
 	// Find the last "\" or "/" in the string and return it and everything before it.
 	int index  = filePath.ReverseFind( _T( '\\' ) );
@@ -69,7 +69,7 @@ CString FileSys::GetPath( const CString& filePath )
 	}
 }
 
-CString FileSys::GetFileName( const CString& filePathOrName )
+TString FileSys::GetFileName( const TString& filePathOrName )
 {
 	// Find the last "\" or "/" in the string and return everything after it.
 	int index  = filePathOrName.ReverseFind( _T( '\\' ) );
@@ -83,7 +83,7 @@ CString FileSys::GetFileName( const CString& filePathOrName )
 	if ( index >= filePathOrName.GetLength() - 1 )
 	{
 		// Last char is path sep, no filename.
-		return CString();
+		return TString();
 	}
 	else if ( index < 0 )
 	{
@@ -96,7 +96,7 @@ CString FileSys::GetFileName( const CString& filePathOrName )
 	}
 }
 
-CString FileSys::AppendPath( const CString& left, const CString& right )
+TString FileSys::AppendPath( const TString& left, const TString& right )
 {
 	if ( left.GetLength() == 0 )
 	{
@@ -114,22 +114,22 @@ CString FileSys::AppendPath( const CString& left, const CString& right )
 	}
 }
 
-CString FileSys::ExtractRelativePath( const CString& basePath, const CString& fullPath )
+TString FileSys::ExtractRelativePath( const TString& basePath, const TString& fullPath )
 {
 	if ( basePath.GetLength() >= fullPath.GetLength() )
 	{
-		return CString();
+		return TString();
 	}
 
 	if ( basePath != fullPath.Left( basePath.GetLength() ) )
 	{
-		return CString();
+		return TString();
 	}
 
 	return fullPath.Mid( basePath.GetLength() );
 }
 
-bool FileSys::DirectoryExists( const CString& path )
+bool FileSys::DirectoryExists( const TString& path )
 {
 	DWORD attributes = GetFileAttributes( path );
 
@@ -143,27 +143,27 @@ bool FileSys::DirectoryExists( const CString& path )
 	}
 }
 
-bool FileSys::IsDirectoryEmptyRecursive( const CString& path )
+bool FileSys::IsDirectoryEmptyRecursive( const TString& path )
 {
 	IsEmptyCallback cb;
 	PathScanner::Scan( path, cb );
 	return cb.IsEmpty();
 }
 
-bool FileSys::CreateDirectoryTree( const CString& path )
+bool FileSys::CreateDirectoryTree( const TString& path )
 {
 	int ret = SHCreateDirectoryEx( NULL, path, NULL );
 	return ret == ERROR_SUCCESS;
 }
 
-std::vector< FilePathInfo > FileSys::GetFilesInDirectory( const CString& directory, const CString& searchPattern, bool recursive )
+std::vector< FilePathInfo > FileSys::GetFilesInDirectory( const TString& directory, const TString& searchPattern, bool recursive )
 {
 	ScannerCallback cb( recursive );
 	PathScanner::Scan( directory, searchPattern, cb );
 	return cb.GetFiles();
 }
 
-CComPtr< IStream > FileSys::OpenFileToRead( const CString& filePath )
+CComPtr< IStream > FileSys::OpenFileToRead( const TString& filePath )
 {
 	CComPtr< IStream > fileStream;
 
@@ -175,7 +175,7 @@ CComPtr< IStream > FileSys::OpenFileToRead( const CString& filePath )
 	return fileStream;
 }
 
-CComPtr< IStream > FileSys::OpenFileToWrite( const CString& filePath )
+CComPtr< IStream > FileSys::OpenFileToWrite( const TString& filePath )
 {
 	CComPtr< IStream > fileStream;
 

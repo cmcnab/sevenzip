@@ -3,4 +3,9 @@
 
 #include <tchar.h>
 #include <atlstr.h>
-typedef CString TString;
+
+
+namespace SevenZip
+{
+	typedef CString TString;
+}

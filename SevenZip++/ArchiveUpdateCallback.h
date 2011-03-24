@@ -19,12 +19,12 @@ namespace intl
 	private:
 
 		long m_refCount;
-		CString m_dirPrefix;
+		TString m_dirPrefix;
 		const std::vector< FilePathInfo >& m_filePaths;
 
 	public:
 
-		ArchiveUpdateCallback( const CString& dirPrefix, const std::vector< FilePathInfo >& filePaths );
+		ArchiveUpdateCallback( const TString& dirPrefix, const std::vector< FilePathInfo >& filePaths );
 		virtual ~ArchiveUpdateCallback();
 
 		STDMETHOD(QueryInterface)( REFIID iid, void** ppvObject );

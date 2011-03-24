@@ -13,7 +13,7 @@ namespace SevenZip
 using namespace intl;
 
 
-SevenZipExtractor::SevenZipExtractor( const SevenZipLibrary& library, const CString& archivePath )
+SevenZipExtractor::SevenZipExtractor( const SevenZipLibrary& library, const TString& archivePath )
 	: m_library( library )
 	, m_archivePath( archivePath )
 {
@@ -23,7 +23,7 @@ SevenZipExtractor::~SevenZipExtractor()
 {
 }
 
-void SevenZipExtractor::ExtractArchive( const CString& destDirectory )
+void SevenZipExtractor::ExtractArchive( const TString& destDirectory )
 {
 	CComPtr< IStream > fileStream = FileSys::OpenFileToRead( m_archivePath );
 	if ( fileStream == NULL )
@@ -34,7 +34,7 @@ void SevenZipExtractor::ExtractArchive( const CString& destDirectory )
 	ExtractArchive( fileStream, destDirectory );
 }
 
-void SevenZipExtractor::ExtractArchive( const CComPtr< IStream >& archiveStream, const CString& destDirectory )
+void SevenZipExtractor::ExtractArchive( const CComPtr< IStream >& archiveStream, const TString& destDirectory )
 {
 	CComPtr< IInArchive > archive;
 	m_library.CreateObject( CLSID_CFormat7z, IID_IInArchive, (void**)&archive );

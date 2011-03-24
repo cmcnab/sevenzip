@@ -5,7 +5,7 @@
 namespace SevenZip
 {
 
-const CString DefaultLibraryPath = _T( "7za.dll" );
+const TString DefaultLibraryPath = _T( "7za.dll" );
 
 SevenZipLibrary::SevenZipLibrary()
 	: m_dll( NULL )
@@ -23,7 +23,7 @@ void SevenZipLibrary::Load()
 	Load( DefaultLibraryPath );
 }
 
-void SevenZipLibrary::Load( const CString& libraryPath )
+void SevenZipLibrary::Load( const TString& libraryPath )
 {
 	Free();
 	m_dll = LoadLibrary( libraryPath );

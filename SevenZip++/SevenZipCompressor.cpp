@@ -13,10 +13,10 @@ namespace SevenZip
 using namespace intl;
 
 
-const CString SearchPatternAllFiles = _T( "*" );
+const TString SearchPatternAllFiles = _T( "*" );
 
 
-SevenZipCompressor::SevenZipCompressor( const SevenZipLibrary& library, const CString& archivePath )
+SevenZipCompressor::SevenZipCompressor( const SevenZipLibrary& library, const TString& archivePath )
 	: m_library( library )
 	, m_archivePath( archivePath )
 {
@@ -31,7 +31,7 @@ void SevenZipCompressor::SetCompressionLevel( const CompressionLevelEnum& level 
 	m_compressionLevel = level;
 }
 
-void SevenZipCompressor::CompressDirectory( const CString& directory, bool includeSubdirs )
+void SevenZipCompressor::CompressDirectory( const TString& directory, bool includeSubdirs )
 {	
 	FindAndCompressFiles( 
 			directory, 
@@ -41,7 +41,7 @@ void SevenZipCompressor::CompressDirectory( const CString& directory, bool inclu
 			includeSubdirs );
 }
 
-void SevenZipCompressor::CompressFiles( const CString& directory, const CString& searchFilter, bool includeSubdirs )
+void SevenZipCompressor::CompressFiles( const TString& directory, const TString& searchFilter, bool includeSubdirs )
 {
 	FindAndCompressFiles( 
 			directory, 
@@ -51,7 +51,7 @@ void SevenZipCompressor::CompressFiles( const CString& directory, const CString&
 			includeSubdirs );
 }
 
-void SevenZipCompressor::CompressAllFiles( const CString& directory, bool includeSubdirs )
+void SevenZipCompressor::CompressAllFiles( const TString& directory, bool includeSubdirs )
 {
 	FindAndCompressFiles( 
 			directory, 
@@ -61,10 +61,10 @@ void SevenZipCompressor::CompressAllFiles( const CString& directory, bool includ
 			includeSubdirs );
 }
 
-void SevenZipCompressor::CompressFile( const CString& filePath )
+void SevenZipCompressor::CompressFile( const TString& filePath )
 {
-	CString path = FileSys::GetPath( filePath );
-	CString name = FileSys::GetFileName( filePath );
+	TString path = FileSys::GetPath( filePath );
+	TString name = FileSys::GetFileName( filePath );
 
 	FindAndCompressFiles( 
 			path, 
@@ -84,7 +84,7 @@ CComPtr< IStream > SevenZipCompressor::OpenArchiveStream()
 	return fileStream;
 }
 
-void SevenZipCompressor::FindAndCompressFiles( const CString& directory, const CString& searchPattern, const CString& pathPrefix, const CComPtr< IStream >& archiveStream, bool recursion )
+void SevenZipCompressor::FindAndCompressFiles( const TString& directory, const TString& searchPattern, const TString& pathPrefix, const CComPtr< IStream >& archiveStream, bool recursion )
 {
 	if ( !FileSys::DirectoryExists( directory ) )
 	{
@@ -100,7 +100,7 @@ void SevenZipCompressor::FindAndCompressFiles( const CString& directory, const C
 	CompressFilesToArchive( archiveStream, pathPrefix, files );
 }
 
-void SevenZipCompressor::CompressFilesToArchive( const CComPtr< IStream >& archiveStream, const CString& pathPrefix, const std::vector< FilePathInfo >& filePaths )
+void SevenZipCompressor::CompressFilesToArchive( const CComPtr< IStream >& archiveStream, const TString& pathPrefix, const std::vector< FilePathInfo >& filePaths )
 {
 	CComPtr< IOutArchive > archiver;
 	m_library.CreateObject( CLSID_CFormat7z, IID_IOutArchive, reinterpret_cast< void** >( &archiver ) );

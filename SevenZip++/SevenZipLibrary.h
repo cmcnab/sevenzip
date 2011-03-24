@@ -21,7 +21,7 @@ namespace SevenZip
 		~SevenZipLibrary();
 
 		void Load();
-		void Load( const CString& libraryPath );
+		void Load( const TString& libraryPath );
 		void Free();
 
 		void CreateObject( const GUID& clsID, const GUID& interfaceID, void** outObject ) const;

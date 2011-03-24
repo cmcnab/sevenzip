@@ -12,7 +12,7 @@ namespace SevenZip
 namespace intl
 {
 
-ArchiveUpdateCallback::ArchiveUpdateCallback( const CString& dirPrefix, const std::vector< FilePathInfo >& filePaths )
+ArchiveUpdateCallback::ArchiveUpdateCallback( const TString& dirPrefix, const std::vector< FilePathInfo >& filePaths )
 	: m_refCount( 0 )
 	, m_dirPrefix( dirPrefix )
 	, m_filePaths( filePaths )

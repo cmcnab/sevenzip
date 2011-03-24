@@ -7,23 +7,23 @@
 
 namespace SevenZip
 {
-	CString StrFmt( const TCHAR* format, ... );
-	CString GetWinErrMsg( const CString& contextMessage, DWORD lastError );
-	CString GetCOMErrMsg( const CString& contextMessage, HRESULT lastError );
+	TString StrFmt( const TCHAR* format, ... );
+	TString GetWinErrMsg( const TString& contextMessage, DWORD lastError );
+	TString GetCOMErrMsg( const TString& contextMessage, HRESULT lastError );
 
 
 	class SevenZipException
 	{
 	protected:
 
-		CString m_message;
+		TString m_message;
 
 	public:
 
 		SevenZipException();
-		SevenZipException( const CString& message );
+		SevenZipException( const TString& message );
 		virtual ~SevenZipException();
 
-		const CString& GetMessage() const;
+		const TString& GetMessage() const;
 	};
 }

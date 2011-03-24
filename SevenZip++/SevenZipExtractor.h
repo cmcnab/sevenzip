@@ -11,17 +11,17 @@ namespace SevenZip
 	private:
 
 		const SevenZipLibrary& m_library;
-		CString m_archivePath;
+		TString m_archivePath;
 
 	public:
 
-		SevenZipExtractor( const SevenZipLibrary& library, const CString& archivePath );
+		SevenZipExtractor( const SevenZipLibrary& library, const TString& archivePath );
 		virtual ~SevenZipExtractor();
 
-		virtual void ExtractArchive( const CString& directory );
+		virtual void ExtractArchive( const TString& directory );
 
 	private:
 
-		void ExtractArchive( const CComPtr< IStream >& archiveStream, const CString& directory );
+		void ExtractArchive( const CComPtr< IStream >& archiveStream, const TString& directory );
 	};
 }

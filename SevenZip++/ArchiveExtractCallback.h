@@ -17,10 +17,10 @@ namespace intl
 
 		long m_refCount;
 		CComPtr< IInArchive > m_archiveHandler;
-		CString m_directory;
+		TString m_directory;
 
-		CString m_relPath;
-		CString m_absPath;
+		TString m_relPath;
+		TString m_absPath;
 		bool m_isDir;
 
 		bool m_hasAttrib;
@@ -34,7 +34,7 @@ namespace intl
 
 	public:
 
-		ArchiveExtractCallback( const CComPtr< IInArchive >& archiveHandler, const CString& directory );
+		ArchiveExtractCallback( const CComPtr< IInArchive >& archiveHandler, const TString& directory );
 		virtual ~ArchiveExtractCallback();
 
 		STDMETHOD(QueryInterface)( REFIID iid, void** ppvObject );
