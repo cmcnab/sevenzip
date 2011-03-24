@@ -18,22 +18,29 @@ private:
 
 public:
 
-	ScannerCallback( bool recursive )
-		: m_recursive( recursive )
-	{}
-
+	ScannerCallback( bool recursive ) : m_recursive( recursive ) {}
 	const std::vector< FilePathInfo >& GetFiles() { return m_files; }
 
-	virtual bool ShouldDescend( const FilePathInfo& directory )
-	{
-		return m_recursive;
-	}
-
-	virtual void ExamineFile( const FilePathInfo& file, bool& exit )
-	{
-		m_files.push_back( file );
-	}
+	virtual bool ShouldDescend( const FilePathInfo& directory ) { return m_recursive; }
+	virtual void ExamineFile( const FilePathInfo& file, bool& exit ) { m_files.push_back( file ); }
 };
+
+
+class IsEmptyCallback : public PathScanner::Callback
+{
+private:
+
+	bool m_isEmpty;
+
+public:
+
+	IsEmptyCallback() : m_isEmpty( true ) {}
+	bool IsEmpty() const { return m_isEmpty; }
+
+	virtual bool ShouldDescend( const FilePathInfo& directory ) { return true; }
+	virtual void ExamineFile( const FilePathInfo& file, bool& exit ) { m_isEmpty = false; exit = true; }
+};
+
 
 CString FileSys::GetPath( const CString& filePath )
 {
@@ -124,14 +131,23 @@ CString FileSys::ExtractRelativePath( const CString& basePath, const CString& fu
 
 bool FileSys::DirectoryExists( const CString& path )
 {
-	// TODO:
-	return true;
+	DWORD attributes = GetFileAttributes( path );
+
+	if ( attributes == INVALID_FILE_ATTRIBUTES )
+	{
+		return false;
+	}
+	else
+	{
+		return ( attributes & FILE_ATTRIBUTE_DIRECTORY ) != 0;
+	}
 }
 
 bool FileSys::IsDirectoryEmptyRecursive( const CString& path )
 {
-	// TODO:
-	return false;
+	IsEmptyCallback cb;
+	PathScanner::Scan( path, cb );
+	return cb.IsEmpty();
 }
 
 bool FileSys::CreateDirectoryTree( const CString& path )
