@@ -37,7 +37,6 @@ void SevenZipCompressor::CompressDirectory( const TString& directory, bool inclu
 			directory, 
 			SearchPatternAllFiles, 
 			FileSys::GetPath( directory ), 
-			OpenArchiveStream(), 
 			includeSubdirs );
 }
 
@@ -47,7 +46,6 @@ void SevenZipCompressor::CompressFiles( const TString& directory, const TString&
 			directory, 
 			searchFilter, 
 			directory, 
-			OpenArchiveStream(), 
 			includeSubdirs );
 }
 
@@ -57,7 +55,6 @@ void SevenZipCompressor::CompressAllFiles( const TString& directory, bool includ
 			directory, 
 			SearchPatternAllFiles, 
 			directory, 
-			OpenArchiveStream(), 
 			includeSubdirs );
 }
 
@@ -70,7 +67,6 @@ void SevenZipCompressor::CompressFile( const TString& filePath )
 			path, 
 			name, 
 			path, 
-			OpenArchiveStream(), 
 			false );
 }
 
@@ -84,7 +80,7 @@ CComPtr< IStream > SevenZipCompressor::OpenArchiveStream()
 	return fileStream;
 }
 
-void SevenZipCompressor::FindAndCompressFiles( const TString& directory, const TString& searchPattern, const TString& pathPrefix, const CComPtr< IStream >& archiveStream, bool recursion )
+void SevenZipCompressor::FindAndCompressFiles( const TString& directory, const TString& searchPattern, const TString& pathPrefix, bool recursion )
 {
 	if ( !FileSys::DirectoryExists( directory ) )
 	{
@@ -97,17 +93,17 @@ void SevenZipCompressor::FindAndCompressFiles( const TString& directory, const T
 	}
 
 	std::vector< FilePathInfo > files = FileSys::GetFilesInDirectory( directory, searchPattern, recursion );
-	CompressFilesToArchive( archiveStream, pathPrefix, files );
+	CompressFilesToArchive( pathPrefix, files );
 }
 
-void SevenZipCompressor::CompressFilesToArchive( const CComPtr< IStream >& archiveStream, const TString& pathPrefix, const std::vector< FilePathInfo >& filePaths )
+void SevenZipCompressor::CompressFilesToArchive( const TString& pathPrefix, const std::vector< FilePathInfo >& filePaths )
 {
 	CComPtr< IOutArchive > archiver;
 	m_library.CreateObject( CLSID_CFormat7z, IID_IOutArchive, reinterpret_cast< void** >( &archiver ) );
 
 	SetCompressionProperties( archiver );
 
-	CComPtr< OutStreamWrapper > outFile = new OutStreamWrapper( archiveStream );
+	CComPtr< OutStreamWrapper > outFile = new OutStreamWrapper( OpenArchiveStream() );
 	CComPtr< ArchiveUpdateCallback > callback = new ArchiveUpdateCallback( pathPrefix, filePaths );
 
 	HRESULT hr = archiver->UpdateItems( outFile, filePaths.size(), callback );

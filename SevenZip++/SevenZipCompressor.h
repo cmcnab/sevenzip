@@ -39,8 +39,8 @@ namespace SevenZip
 	private:
 
 		CComPtr< IStream > OpenArchiveStream();
-		void FindAndCompressFiles( const TString& directory, const TString& searchPattern, const TString& pathPrefix, const CComPtr< IStream >& archiveStream, bool recursion );
-		void CompressFilesToArchive( const CComPtr< IStream >& archiveStream, const TString& pathPrefix, const std::vector< intl::FilePathInfo >& filePaths );
+		void FindAndCompressFiles( const TString& directory, const TString& searchPattern, const TString& pathPrefix, bool recursion );
+		void CompressFilesToArchive( const TString& pathPrefix, const std::vector< intl::FilePathInfo >& filePaths );
 		void SetCompressionProperties( IUnknown* outArchive );
 	};
 }
