@@ -35,6 +35,7 @@ void SevenZipLibrary::Load( const TString& libraryPath )
 	m_func = reinterpret_cast< CreateObjectFunc >( GetProcAddress( m_dll, "CreateObject" ) );
 	if ( m_func == NULL )
 	{
+		Free();
 		throw SevenZipException( _T( "Loaded library is missing required CreateObject function" ) );
 	}
 }
