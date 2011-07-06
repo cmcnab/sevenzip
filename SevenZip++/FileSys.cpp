@@ -15,14 +15,22 @@ private:
 
 	std::vector< FilePathInfo > m_files;
 	bool m_recursive;
+	bool m_onlyFirst;
 
 public:
 
-	ScannerCallback( bool recursive ) : m_recursive( recursive ) {}
+	ScannerCallback( bool recursive, bool onlyFirst = false ) : m_recursive( recursive ), m_onlyFirst( onlyFirst ) {}
 	const std::vector< FilePathInfo >& GetFiles() { return m_files; }
 
 	virtual bool ShouldDescend( const FilePathInfo& directory ) { return m_recursive; }
-	virtual void ExamineFile( const FilePathInfo& file, bool& exit ) { m_files.push_back( file ); }
+	virtual void ExamineFile( const FilePathInfo& file, bool& exit )
+	{
+		m_files.push_back( file );
+		if ( m_onlyFirst )
+		{
+			exit = true;
+		}
+	}
 };
 
 
@@ -61,7 +69,7 @@ TString FileSys::GetPath( const TString& filePath )
 	else if ( index < 0 )
 	{
 		// No path sep.
-		return CAtlString();
+		return TString();
 	}
 	else
 	{
@@ -154,6 +162,16 @@ bool FileSys::CreateDirectoryTree( const TString& path )
 {
 	int ret = SHCreateDirectoryEx( NULL, path, NULL );
 	return ret == ERROR_SUCCESS;
+}
+
+std::vector< FilePathInfo > FileSys::GetFile( const TString& filePathOrName )
+{
+	TString path = FileSys::GetPath( filePathOrName );
+	TString name = FileSys::GetFileName( filePathOrName );
+
+	ScannerCallback cb( false, true );
+	PathScanner::Scan( path, name, cb );
+	return cb.GetFiles();
 }
 
 std::vector< FilePathInfo > FileSys::GetFilesInDirectory( const TString& directory, const TString& searchPattern, bool recursive )

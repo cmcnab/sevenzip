@@ -60,14 +60,14 @@ void SevenZipCompressor::CompressAllFiles( const TString& directory, bool includ
 
 void SevenZipCompressor::CompressFile( const TString& filePath )
 {
-	TString path = FileSys::GetPath( filePath );
-	TString name = FileSys::GetFileName( filePath );
+	std::vector< FilePathInfo > files = FileSys::GetFile( filePath );
 
-	FindAndCompressFiles( 
-			path, 
-			name, 
-			path, 
-			false );
+	if ( files.empty() )
+	{
+		throw SevenZipException( StrFmt( _T( "File \"%s\" does not exist" ), filePath.GetString() ) );
+	}
+
+	CompressFilesToArchive( TString(), files );
 }
 
 CComPtr< IStream > SevenZipCompressor::OpenArchiveStream()
