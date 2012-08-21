@@ -185,7 +185,13 @@ CComPtr< IStream > FileSys::OpenFileToRead( const TString& filePath )
 {
 	CComPtr< IStream > fileStream;
 
-	if ( FAILED( SHCreateStreamOnFileEx( filePath.c_str(), STGM_READ, FILE_ATTRIBUTE_NORMAL, FALSE, NULL, &fileStream ) ) )
+#ifdef _UNICODE
+	const WCHAR* filePathStr = filePath.c_str();
+#else
+	WCHAR filePathStr[MAX_PATH];
+	MultiByteToWideChar( CP_UTF8, 0, filePath.c_str(), filePath.length() + 1, filePathStr, MAX_PATH );
+#endif
+	if ( FAILED( SHCreateStreamOnFileEx( filePathStr, STGM_READ, FILE_ATTRIBUTE_NORMAL, FALSE, NULL, &fileStream ) ) )
 	{
 		return NULL;
 	}
@@ -196,8 +202,14 @@ CComPtr< IStream > FileSys::OpenFileToRead( const TString& filePath )
 CComPtr< IStream > FileSys::OpenFileToWrite( const TString& filePath )
 {
 	CComPtr< IStream > fileStream;
-
-	if ( FAILED( SHCreateStreamOnFileEx( filePath.c_str(), STGM_CREATE | STGM_WRITE, FILE_ATTRIBUTE_NORMAL, TRUE, NULL, &fileStream ) ) )
+	
+#ifdef _UNICODE
+	const WCHAR* filePathStr = filePath.c_str();
+#else
+	WCHAR filePathStr[MAX_PATH];
+	MultiByteToWideChar( CP_UTF8, 0, filePath.c_str(), filePath.length() + 1, filePathStr, MAX_PATH );
+#endif
+	if ( FAILED( SHCreateStreamOnFileEx( filePathStr, STGM_CREATE | STGM_WRITE, FILE_ATTRIBUTE_NORMAL, TRUE, NULL, &fileStream ) ) )
 	{
 		return NULL;
 	}

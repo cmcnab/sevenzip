@@ -3,7 +3,7 @@ syntax: glob
 *.sdf
 *.opensdf
 *.vcxproj.user
-*\Debug\*
-*\Release\*
+*\*Debug\*
+*\*Release\*
 ipch\*
 

@@ -169,7 +169,7 @@ STDMETHODIMP ArchiveUpdateCallback::CryptoGetTextPassword2( Int32* passwordIsDef
 {
 	// TODO: support passwords
 	*passwordIsDefined = 0;
-	*password = SysAllocString( _T( "" ) );
+	*password = SysAllocString( L"" );
 	return *password != 0 ? S_OK : E_OUTOFMEMORY;
 }
 
