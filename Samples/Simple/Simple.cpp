@@ -2,8 +2,7 @@
 #include <windows.h>
 #include <stdio.h>
 #include <tchar.h>
-#include "../../SevenZip++/SevenZipCompressor.h"
-#include "../../SevenZip++/SevenZipExtractor.h"
+#include "../../SevenZip++/7zpp.h"
 
 
 int PrintUsage()
