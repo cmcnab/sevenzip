@@ -53,65 +53,65 @@ public:
 TString FileSys::GetPath( const TString& filePath )
 {
 	// Find the last "\" or "/" in the string and return it and everything before it.
-	int index  = filePath.ReverseFind( _T( '\\' ) );
-	int index2 = filePath.ReverseFind( _T( '/' ) );
+	size_t index  = filePath.rfind( _T( '\\' ) );
+	size_t index2 = filePath.rfind( _T( '/' ) );
 
-	if ( index2 > index )
+	if ( index2 != std::string::npos && index2 > index )
 	{
 		index = index2;
 	}
 
-	if ( index >= filePath.GetLength() - 1 )
-	{
-		// Last char is path sep, the whole thing is a path.
-		return filePath;
-	}
-	else if ( index < 0 )
+	if ( index == std::string::npos )
 	{
 		// No path sep.
 		return TString();
 	}
+	else if ( index + 1 >= filePath.size() )
+	{
+		// Last char is path sep, the whole thing is a path.
+		return filePath;
+	}
 	else
 	{
-		return filePath.Left( index + 1 );
+		return filePath.substr( 0, index + 1 );
 	}
 }
 
 TString FileSys::GetFileName( const TString& filePathOrName )
 {
 	// Find the last "\" or "/" in the string and return everything after it.
-	int index  = filePathOrName.ReverseFind( _T( '\\' ) );
-	int index2 = filePathOrName.ReverseFind( _T( '/' ) );
+	size_t index  = filePathOrName.rfind( _T( '\\' ) );
+	size_t index2 = filePathOrName.rfind( _T( '/' ) );
 
-	if ( index2 > index )
+	if ( index2 != std::string::npos && index2 > index )
 	{
 		index = index2;
 	}
 
-	if ( index >= filePathOrName.GetLength() - 1 )
-	{
-		// Last char is path sep, no filename.
-		return TString();
-	}
-	else if ( index < 0 )
+	if ( index == std::string::npos )
 	{
 		// No path sep, return the whole thing.
 		return filePathOrName;
 	}
+	else if ( index + 1 >= filePathOrName.size() )
+	{
+		// Last char is path sep, no filename.
+		return TString();
+	}
 	else
 	{
-		return filePathOrName.Mid( index + 1 );
+		return filePathOrName.substr( index + 1, filePathOrName.size() - ( index + 1 ) );
 	}
 }
 
 TString FileSys::AppendPath( const TString& left, const TString& right )
 {
-	if ( left.GetLength() == 0 )
+	if ( left.empty() )
 	{
 		return right;
 	}
 
-	TCHAR lastChar = left[ left.GetLength() - 1 ];
+	TCHAR lastChar = left[ left.size() - 1 ];
 	if ( lastChar == _T( '\\' ) || lastChar == _T( '/' ) )
 	{
 		return left + right;
@@ -124,22 +124,22 @@ TString FileSys::AppendPath( const TString& left, const TString& right )
 
 TString FileSys::ExtractRelativePath( const TString& basePath, const TString& fullPath )
 {
-	if ( basePath.GetLength() >= fullPath.GetLength() )
+	if ( basePath.size() >= fullPath.size() )
 	{
 		return TString();
 	}
 
-	if ( basePath != fullPath.Left( basePath.GetLength() ) )
+	if ( basePath != fullPath.substr( 0, basePath.size() ) )
 	{
 		return TString();
 	}
 
-	return fullPath.Mid( basePath.GetLength() );
+	return fullPath.substr( basePath.size(), fullPath.size() - basePath.size() );
 }
 
 bool FileSys::DirectoryExists( const TString& path )
 {
-	DWORD attributes = GetFileAttributes( path );
+	DWORD attributes = GetFileAttributes( path.c_str() );
 
 	if ( attributes == INVALID_FILE_ATTRIBUTES )
 	{
@@ -160,7 +160,7 @@ bool FileSys::IsDirectoryEmptyRecursive( const TString& path )
 
 bool FileSys::CreateDirectoryTree( const TString& path )
 {
-	int ret = SHCreateDirectoryEx( NULL, path, NULL );
+	int ret = SHCreateDirectoryEx( NULL, path.c_str(), NULL );
 	return ret == ERROR_SUCCESS;
 }
 
@@ -185,7 +185,7 @@ CComPtr< IStream > FileSys::OpenFileToRead( const TString& filePath )
 {
 	CComPtr< IStream > fileStream;
 
-	if ( FAILED( SHCreateStreamOnFileEx( filePath, STGM_READ, FILE_ATTRIBUTE_NORMAL, FALSE, NULL, &fileStream ) ) )
+	if ( FAILED( SHCreateStreamOnFileEx( filePath.c_str(), STGM_READ, FILE_ATTRIBUTE_NORMAL, FALSE, NULL, &fileStream ) ) )
 	{
 		return NULL;
 	}
@@ -197,7 +197,7 @@ CComPtr< IStream > FileSys::OpenFileToWrite( const TString& filePath )
 {
 	CComPtr< IStream > fileStream;
 
-	if ( FAILED( SHCreateStreamOnFileEx( filePath, STGM_CREATE | STGM_WRITE, FILE_ATTRIBUTE_NORMAL, TRUE, NULL, &fileStream ) ) )
+	if ( FAILED( SHCreateStreamOnFileEx( filePath.c_str(), STGM_CREATE | STGM_WRITE, FILE_ATTRIBUTE_NORMAL, TRUE, NULL, &fileStream ) ) )
 	{
 		return NULL;
 	}

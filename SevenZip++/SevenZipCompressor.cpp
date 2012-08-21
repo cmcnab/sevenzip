@@ -64,7 +64,7 @@ void SevenZipCompressor::CompressFile( const TString& filePath )
 
 	if ( files.empty() )
 	{
-		throw SevenZipException( StrFmt( _T( "File \"%s\" does not exist" ), filePath.GetString() ) );
+		throw SevenZipException( StrFmt( _T( "File \"%s\" does not exist" ), filePath.c_str() ) );
 	}
 
 	CompressFilesToArchive( TString(), files );
@@ -75,7 +75,7 @@ CComPtr< IStream > SevenZipCompressor::OpenArchiveStream()
 	CComPtr< IStream > fileStream = FileSys::OpenFileToWrite( m_archivePath );
 	if ( fileStream == NULL )
 	{
-		throw SevenZipException( StrFmt( _T( "Could not create archive \"%s\"" ), m_archivePath.GetString() ) );
+		throw SevenZipException( StrFmt( _T( "Could not create archive \"%s\"" ), m_archivePath.c_str() ) );
 	}
 	return fileStream;
 }
@@ -84,12 +84,12 @@ void SevenZipCompressor::FindAndCompressFiles( const TString& directory, const T
 {
 	if ( !FileSys::DirectoryExists( directory ) )
 	{
-		throw SevenZipException( StrFmt( _T( "Directory \"%s\" does not exist" ), directory.GetString() ) );
+		throw SevenZipException( StrFmt( _T( "Directory \"%s\" does not exist" ), directory.c_str() ) );
 	}
 	
 	if ( FileSys::IsDirectoryEmptyRecursive( directory ) )
 	{
-		throw SevenZipException( StrFmt( _T( "Directory \"%s\" is empty" ), directory.GetString() ) );
+		throw SevenZipException( StrFmt( _T( "Directory \"%s\" is empty" ), directory.c_str() ) );
 	}
 
 	std::vector< FilePathInfo > files = FileSys::GetFilesInDirectory( directory, searchPattern, recursion );

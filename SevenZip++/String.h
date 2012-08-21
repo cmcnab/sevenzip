@@ -2,10 +2,14 @@
 
 
 #include <tchar.h>
-#include <atlstr.h>
+#include <string>
 
 
 namespace SevenZip
 {
-	typedef CString TString;
+#ifdef _UNICODE
+	typedef std::wstring TString;
+#else
+	typedef std::string TString;
+#endif
 }

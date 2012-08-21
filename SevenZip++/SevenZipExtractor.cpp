@@ -55,7 +55,7 @@ void SevenZipExtractor::ExtractArchive( const TString& destDirectory )
 	CComPtr< IStream > fileStream = FileSys::OpenFileToRead( m_archivePath );
 	if ( fileStream == NULL )
 	{
-		throw SevenZipException( StrFmt( _T( "Could not open archive \"%s\"" ), m_archivePath.GetString() ) );
+		throw SevenZipException( StrFmt( _T( "Could not open archive \"%s\"" ), m_archivePath.c_str() ) );
 	}
 
 	ExtractArchive( fileStream, destDirectory );

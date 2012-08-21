@@ -65,7 +65,7 @@ namespace intl
 			const TCHAR*	string;
 		};
 
-		static TEnum Parse( const CAtlString& string, const TEnum defaultValue )
+		static TEnum Parse( const TString& string, const TEnum defaultValue )
 		{
 			const StringValue* it = DerivedDef::Strings;
 			for (; it->string != NULL; ++it )
@@ -78,7 +78,7 @@ namespace intl
 			return defaultValue;
 		}
 
-		static CAtlString Format( const TEnum& value )
+		static TString Format( const TEnum& value )
 		{
 			const StringValue* it = DerivedDef::Strings;
 			for (; it->string != NULL; ++it )
@@ -88,7 +88,7 @@ namespace intl
 					return it->string;
 				}
 			}
-			return CAtlString();
+			return TString();
 		}
 	};
 
@@ -117,7 +117,7 @@ namespace intl
 			m_value( value )
 		{}
 
-		static ThisClass Parse( const CAtlString& string )
+		static ThisClass Parse( const TString& string )
 		{
 			return ThisClass( TEnumClass::Parse( string, DefaultValue ) );
 		}
@@ -127,7 +127,7 @@ namespace intl
 			return m_value;
 		}
 
-		CAtlString GetString() const
+		TString GetString() const
 		{
 			return TEnumClass::Format( m_value );
 		}

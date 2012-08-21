@@ -38,7 +38,7 @@ bool PathScanner::ExamineFiles( const TString& directory, const TString& searchP
 	bool exit = false;
 
 	WIN32_FIND_DATA fdata;
-	HANDLE hFile = FindFirstFile( findStr, &fdata );
+	HANDLE hFile = FindFirstFile( findStr.c_str(), &fdata );
 	if ( hFile == INVALID_HANDLE_VALUE )
 	{
 		return exit;
@@ -70,7 +70,7 @@ void PathScanner::ExamineDirectories( const TString& directory, std::deque< TStr
 	TString findStr = FileSys::AppendPath( directory, _T( "*" ) );
 
 	WIN32_FIND_DATA fdata;
-	HANDLE hFile = FindFirstFile( findStr, &fdata );
+	HANDLE hFile = FindFirstFile( findStr.c_str(), &fdata );
 	if ( hFile == INVALID_HANDLE_VALUE )
 	{
 		return;

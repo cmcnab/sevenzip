@@ -15,9 +15,10 @@ TString StrFmt( const TCHAR* format, ... )
 	va_start( args, format );
 
 	sz		= _vsctprintf( format, args ) + 1;
-	buffer	= result.GetBuffer( sz );
-	sz		= _vsntprintf_s( buffer, sz, _TRUNCATE, format, args );
-	result	.ReleaseBuffer( sz );
+	buffer	= new TCHAR[sz];
+	_vsntprintf_s( buffer, sz, _TRUNCATE, format, args );
+	result	= buffer;
+	delete [] buffer;
 
 	va_end( args );
 
@@ -27,13 +28,13 @@ TString StrFmt( const TCHAR* format, ... )
 TString GetWinErrMsg( const TString& contextMessage, DWORD lastError )
 {
 	// TODO: use FormatMessage to get the appropriate message from the 
-	return StrFmt( _T( "%s: GetLastError = %lu" ), contextMessage.GetString(), lastError );
+	return StrFmt( _T( "%s: GetLastError = %lu" ), contextMessage.c_str(), lastError );
 }
 
 TString GetCOMErrMsg( const TString& contextMessage, HRESULT lastError )
 {
 	// TODO: use FormatMessage to get the appropriate message from the 
-	return StrFmt( _T( "%s: HRESULT = 0x%08X" ), contextMessage.GetString(), lastError );
+	return StrFmt( _T( "%s: HRESULT = 0x%08X" ), contextMessage.c_str(), lastError );
 }
 
 SevenZipException::SevenZipException()

@@ -1,3 +1,5 @@
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
 #include <stdio.h>
 #include <tchar.h>
 #include "../../SevenZip++/SevenZipCompressor.h"
@@ -70,7 +72,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	}
 	catch (SevenZip::SevenZipException& ex)
 	{
-		_tprintf(_T("Error: %s\n"), ex.GetMessage().GetString());
+		_tprintf(_T("Error: %s\n"), ex.GetMessage().c_str());
 	}
 
 	return PrintUsage();

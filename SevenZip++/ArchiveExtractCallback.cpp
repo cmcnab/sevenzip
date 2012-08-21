@@ -115,7 +115,7 @@ STDMETHODIMP ArchiveExtractCallback::GetStream( UInt32 index, ISequentialOutStre
 	CComPtr< IStream > fileStream = FileSys::OpenFileToWrite( m_absPath );
 	if ( fileStream == NULL )
 	{
-		m_absPath.Empty();
+		m_absPath.clear();
 		return HRESULT_FROM_WIN32( GetLastError() );
 	}
 
@@ -132,14 +132,14 @@ STDMETHODIMP ArchiveExtractCallback::PrepareOperation( Int32 askExtractMode )
 
 STDMETHODIMP ArchiveExtractCallback::SetOperationResult( Int32 operationResult )
 {
-	if ( m_absPath.IsEmpty() )
+	if ( m_absPath.empty() )
 	{
 		return S_OK;
 	}
 
 	if ( m_hasModifiedTime )
 	{
-		HANDLE fileHandle = CreateFile( m_absPath, GENERIC_WRITE, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL );
+		HANDLE fileHandle = CreateFile( m_absPath.c_str(), GENERIC_WRITE, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL );
 		if ( fileHandle != INVALID_HANDLE_VALUE )
 		{
 			SetFileTime( fileHandle, NULL, NULL, &m_modifiedTime );
@@ -149,7 +149,7 @@ STDMETHODIMP ArchiveExtractCallback::SetOperationResult( Int32 operationResult )
 
 	if ( m_hasAttrib )
 	{
-		SetFileAttributes( m_absPath, m_attrib );
+		SetFileAttributes( m_absPath.c_str(), m_attrib );
 	}
 
 	return S_OK;

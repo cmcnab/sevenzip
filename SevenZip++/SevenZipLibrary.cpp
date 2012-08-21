@@ -26,7 +26,7 @@ void SevenZipLibrary::Load()
 void SevenZipLibrary::Load( const TString& libraryPath )
 {
 	Free();
-	m_dll = LoadLibrary( libraryPath );
+	m_dll = LoadLibrary( libraryPath.c_str() );
 	if ( m_dll == NULL )
 	{
 		throw SevenZipException( GetWinErrMsg( _T( "LoadLibrary" ), GetLastError() ) );
