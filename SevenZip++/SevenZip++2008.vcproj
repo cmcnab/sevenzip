@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="SevenZip++"
 	ProjectGUID="{87675A89-D1C2-4C3D-ABA6-497E75A89962}"
 	RootNamespace="SevenZip"
@@ -44,7 +44,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\..\External\lzma\CPP;"
+				AdditionalIncludeDirectories="..\..\..\External\lzma\CPP;..\7zip\CPP"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -173,7 +173,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\..\..\External\lzma\CPP;"
+				AdditionalIncludeDirectories="..\..\..\External\lzma\CPP;..\7zip\CPP"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
