@@ -5,7 +5,7 @@ SevenZip++
 
 This is a C++ wrapper for accessing the 7-zip COM-like API in 7z.dll and 7za.dll. This code is heavily based off of the Client7z sample found in the LZMA SDK ([http://www.7-zip.org/sdk.html](http://www.7-zip.org/sdk.html)).
 
-The project itself is a static library and a small sample, with build files for Visual Studio 2010 and 2008.  To compile the library you will need the LZMA SDK for some headers, otherwise you can download the pre-complied lib files and headers on the [Downloads](https://bitbucket.org/cmcnab/sevenzip/downloads) page.
+The project itself is a static library and a small sample, with build files for Visual Studio 2010 and 2008.  To compile the library you will need the LZMA SDK for some headers, otherwise you can download the pre-complied lib files and headers on the [Releases](https://github.com/cmcnab/sevenzip/releases) page.
 
 To use, first load the 7z DLL into memory:
 
